@@ -1,0 +1,97 @@
+[gd_scene load_steps=9 format=3 uid="uid://underground_tunnel_uid"]
+
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="1_stone"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_TunnelStone"]
+resource_name = "Mat_TunnelStone"
+albedo_color = Color(0.72, 0.75, 0.72, 1)
+albedo_texture = ExtResource("1_stone")
+uv1_scale = Vector3(4, 3, 4)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Mat_SupportTimber"]
+resource_name = "Mat_WoodPlanks"
+albedo_color = Color(0.42, 0.30, 0.18, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_BlastDoor"]
+resource_name = "Mat_MetalPlate"
+albedo_color = Color(0.24, 0.28, 0.32, 1)
+metallic = 0.85
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="Mesh_TunnelWall"]
+material = SubResource("Mat_TunnelStone")
+size = Vector3(1.2, 4.2, 12.0)
+
+[sub_resource type="BoxShape3D" id="Shape_TunnelWall"]
+size = Vector3(1.2, 4.2, 12.0)
+
+[sub_resource type="BoxMesh" id="Mesh_Ceiling"]
+material = SubResource("Mat_TunnelStone")
+size = Vector3(8.4, 1.0, 12.0)
+
+[sub_resource type="BoxMesh" id="Mesh_TimberBent"]
+material = SubResource("Mat_SupportTimber")
+size = Vector3(0.35, 3.8, 0.35)
+
+[node name="UndergroundPassageTunnel" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="WallLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 2.1, 0)
+mesh = SubResource("Mesh_TunnelWall")
+
+[node name="ColWallLeft" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 2.1, 0)
+shape = SubResource("Shape_TunnelWall")
+
+[node name="WallRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 2.1, 0)
+mesh = SubResource("Mesh_TunnelWall")
+
+[node name="ColWallRight" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 2.1, 0)
+shape = SubResource("Shape_TunnelWall")
+
+[node name="Ceiling" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+mesh = SubResource("Mesh_Ceiling")
+
+[node name="ColCeiling" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+shape = SubResource("Shape_TunnelWall")
+
+[node name="TimberPostL1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.9, -4.0)
+mesh = SubResource("Mesh_TimberBent")
+
+[node name="TimberPostR1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.9, -4.0)
+mesh = SubResource("Mesh_TimberBent")
+
+[node name="TimberBeam1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 3.8, -4.0)
+mesh = SubResource("Mesh_TunnelWall")
+scale = Vector3(0.04, 0.08, 0.48)
+
+[node name="TimberPostL2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 1.9, 4.0)
+mesh = SubResource("Mesh_TimberBent")
+
+[node name="TimberPostR2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.9, 4.0)
+mesh = SubResource("Mesh_TimberBent")
+
+[node name="TimberBeam2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 3.8, 4.0)
+mesh = SubResource("Mesh_TunnelWall")
+scale = Vector3(0.04, 0.08, 0.48)
+
+[node name="TunnelLantern" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+light_color = Color(1, 0.72, 0.38, 1)
+light_energy = 2.2
+omni_range = 10.0
+omni_attenuation = 1.2

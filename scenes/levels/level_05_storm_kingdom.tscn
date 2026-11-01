@@ -1,0 +1,210 @@
+[gd_scene load_steps=21 format=3 uid="uid://level_05_storm_kingdom_uid"]
+
+[ext_resource type="Script" path="res://scripts/levels/level_05_storm_kingdom.gd" id="1_lvl5"]
+[ext_resource type="PackedScene" path="res://scenes/player/kael_shooter.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shooter_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dlg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_storm"]
+sky_top_color = Color(0.12, 0.08, 0.22, 1)
+sky_horizon_color = Color(0.35, 0.2, 0.5, 1)
+ground_bottom_color = Color(0.08, 0.05, 0.14, 1)
+ground_horizon_color = Color(0.3, 0.18, 0.45, 1)
+
+[sub_resource type="Sky" id="Sky_storm"]
+sky_material = SubResource("SkyMat_storm")
+
+[sub_resource type="Environment" id="Env_storm"]
+background_mode = 2
+sky = SubResource("Sky_storm")
+ambient_light_source = 2
+ambient_light_color = Color(0.45, 0.35, 0.65, 1)
+ambient_light_energy = 0.65
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Mat_DarkCitadelStone"]
+albedo_color = Color(0.14, 0.15, 0.2, 1)
+metallic = 0.5
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="Mesh_CitadelPlaza"]
+material = SubResource("Mat_DarkCitadelStone")
+size = Vector3(85, 2, 85)
+
+[sub_resource type="BoxShape3D" id="Shape_CitadelPlaza"]
+size = Vector3(85, 2, 85)
+
+[sub_resource type="StandardMaterial3D" id="Mat_FortressPillar"]
+albedo_color = Color(0.2, 0.18, 0.28, 1)
+metallic = 0.75
+roughness = 0.3
+
+[sub_resource type="BoxMesh" id="Mesh_CitadelPillar"]
+material = SubResource("Mat_FortressPillar")
+size = Vector3(2.5, 12, 2.5)
+
+[sub_resource type="BoxShape3D" id="Shape_CitadelPillar"]
+size = Vector3(2.5, 12, 2.5)
+
+[sub_resource type="StandardMaterial3D" id="Mat_StormCore"]
+albedo_color = Color(0.85, 0.35, 1, 1)
+emission_enabled = true
+emission = Color(0.8, 0.3, 1, 1)
+emission_energy_multiplier = 4.5
+
+[sub_resource type="CylinderMesh" id="Mesh_StormSpire"]
+material = SubResource("Mat_FortressPillar")
+top_radius = 0.4
+bottom_radius = 1.6
+height = 14.0
+
+[sub_resource type="CylinderShape3D" id="Shape_StormSpire"]
+top_radius = 0.4
+bottom_radius = 1.6
+height = 14.0
+
+[sub_resource type="SphereMesh" id="Mesh_StormCore"]
+material = SubResource("Mat_StormCore")
+radius = 1.6
+height = 3.2
+
+[sub_resource type="CapsuleShape3D" id="Capsule_enemy"]
+radius = 0.4
+height = 1.8
+
+[node name="Level05StormKingdom" type="Node3D"]
+script = ExtResource("1_lvl5")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_storm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 35, 0)
+light_color = Color(0.75, 0.7, 0.95, 1)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Citadel" type="Node3D" parent="."]
+
+[node name="Plaza" type="StaticBody3D" parent="Citadel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Citadel/Plaza"]
+mesh = SubResource("Mesh_CitadelPlaza")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Citadel/Plaza"]
+shape = SubResource("Shape_CitadelPlaza")
+
+[node name="PillarL1" type="StaticBody3D" parent="Citadel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 5, 6)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Citadel/PillarL1"]
+mesh = SubResource("Mesh_CitadelPillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Citadel/PillarL1"]
+shape = SubResource("Shape_CitadelPillar")
+
+[node name="PillarR1" type="StaticBody3D" parent="Citadel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 5, 6)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Citadel/PillarR1"]
+mesh = SubResource("Mesh_CitadelPillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Citadel/PillarR1"]
+shape = SubResource("Shape_CitadelPillar")
+
+[node name="EclipseCitadel" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -28)
+
+[node name="StormSpire" type="Node3D" parent="EclipseCitadel"]
+
+[node name="SpireBody" type="StaticBody3D" parent="EclipseCitadel/StormSpire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 0)
+collision_layer = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="EclipseCitadel/StormSpire/SpireBody"]
+mesh = SubResource("Mesh_StormSpire")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="EclipseCitadel/StormSpire/SpireBody"]
+shape = SubResource("Shape_StormSpire")
+
+[node name="CoreMesh" type="MeshInstance3D" parent="EclipseCitadel/StormSpire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 13.5, 0)
+mesh = SubResource("Mesh_StormCore")
+
+[node name="Label3D" type="Label3D" parent="EclipseCitadel/StormSpire"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.5, 0)
+billboard = 1
+text = "⚡ Master Storm Spire"
+font_size = 30
+modulate = Color(0.85, 0.4, 1, 1)
+
+[node name="KaelShooter" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 24)
+
+[node name="Elite_Citadel_Trooper" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 8)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Elite_Citadel_Trooper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Elite_Citadel_Infiltrator" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 4)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Elite_Citadel_Infiltrator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Elite_Citadel_Enforcer" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -8)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Elite_Citadel_Enforcer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Elite_Citadel_Marksman" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -12)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Elite_Citadel_Marksman"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Boss_EclipseSovereign" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -18)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boss_EclipseSovereign"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="ShooterHUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="DialogueLayer" parent="." instance=ExtResource("5_dlg")]
+

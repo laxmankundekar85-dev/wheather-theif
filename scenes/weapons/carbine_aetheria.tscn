@@ -1,0 +1,120 @@
+[gd_scene load_steps=14 format=3 uid="uid://aetheria_carbine_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/weapons/hitscan_weapon.gd" id="1_weapon"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_WhiteCeramic"]
+albedo_color = Color(0.92, 0.94, 0.96, 1)
+metallic = 0.4
+roughness = 0.25
+
+[sub_resource type="StandardMaterial3D" id="Mat_SunGoldCoil"]
+albedo_color = Color(1.0, 0.65, 0.1, 1)
+emission_enabled = true
+emission = Color(1.0, 0.55, 0.08, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_DarkChassis"]
+albedo_color = Color(0.12, 0.14, 0.16, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="Mesh_Receiver"]
+material = SubResource("Mat_WhiteCeramic")
+size = Vector3(0.08, 0.11, 0.44)
+
+[sub_resource type="BoxMesh" id="Mesh_EnergyCoil"]
+material = SubResource("Mat_SunGoldCoil")
+size = Vector3(0.05, 0.05, 0.26)
+
+[sub_resource type="CylinderMesh" id="Mesh_PrismBarrel"]
+material = SubResource("Mat_DarkChassis")
+top_radius = 0.02
+bottom_radius = 0.024
+height = 0.36
+
+[sub_resource type="BoxMesh" id="Mesh_Stock"]
+material = SubResource("Mat_WhiteCeramic")
+size = Vector3(0.06, 0.11, 0.22)
+
+[sub_resource type="BoxMesh" id="Mesh_Grip"]
+material = SubResource("Mat_DarkChassis")
+size = Vector3(0.045, 0.13, 0.06)
+
+[sub_resource type="BoxMesh" id="Mesh_HoloSight"]
+material = SubResource("Mat_SunGoldCoil")
+size = Vector3(0.035, 0.045, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="Mat_MuzzleFlash"]
+shading_mode = 0
+albedo_color = Color(1, 0.8, 0.2, 0.95)
+
+[sub_resource type="BoxMesh" id="Mesh_Flash"]
+material = SubResource("Mat_MuzzleFlash")
+size = Vector3(0.08, 0.08, 0.08)
+
+[node name="AetheriaCarbine" type="Node3D"]
+script = ExtResource("1_weapon")
+weapon_id = "carbine_aetheria"
+weapon_name = "Aetheria Solar Burst Carbine"
+weapon_type = 6
+rarity = 3
+is_automatic = true
+base_damage = 24
+headshot_multiplier = 2.2
+fire_rate = 11.0
+mag_capacity = 32
+current_ammo = 32
+reserve_ammo = 128
+max_reserve_ammo = 256
+reload_time = 1.7
+effective_range = 160.0
+base_spread_deg = 0.35
+max_spread_deg = 2.8
+spread_bloom_rate = 0.3
+spread_recovery_rate = 9.0
+ads_spread_multiplier = 0.2
+vertical_recoil_strength = 0.62
+horizontal_recoil_strength = 0.18
+scope_type = 2
+scope_zoom_fov = 42.0
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Receiver" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("Mesh_Receiver")
+
+[node name="EnergyCoil" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.06)
+mesh = SubResource("Mesh_EnergyCoil")
+
+[node name="Barrel" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.01, -0.38)
+mesh = SubResource("Mesh_PrismBarrel")
+
+[node name="Stock" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0.26)
+mesh = SubResource("Mesh_Stock")
+
+[node name="Grip" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -0.09, 0.06)
+mesh = SubResource("Mesh_Grip")
+
+[node name="HoloSight" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, -0.02)
+mesh = SubResource("Mesh_HoloSight")
+
+[node name="MuzzlePoint" type="Marker3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -0.56)
+
+[node name="MuzzleFlash" type="CPUParticles3D" parent="Model/MuzzlePoint"]
+emitting = false
+amount = 5
+lifetime = 0.05
+one_shot = true
+mesh = SubResource("Mesh_Flash")
+direction = Vector3(0, 0, -1)
+spread = 20.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+

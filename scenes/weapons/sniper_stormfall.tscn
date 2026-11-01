@@ -1,0 +1,132 @@
+[gd_scene load_steps=15 format=3 uid="uid://stormfall_sniper_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/weapons/hitscan_weapon.gd" id="1_weapon"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_MatteCarbon"]
+albedo_color = Color(0.12, 0.13, 0.15, 1)
+metallic = 0.8
+roughness = 0.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_PrecisionOptic"]
+albedo_color = Color(0.15, 0.45, 0.9, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="BoxMesh" id="Mesh_Chassis"]
+material = SubResource("Mat_MatteCarbon")
+size = Vector3(0.075, 0.11, 0.58)
+
+[sub_resource type="CylinderMesh" id="Mesh_Barrel"]
+material = SubResource("Mat_MatteCarbon")
+top_radius = 0.015
+bottom_radius = 0.018
+height = 0.72
+
+[sub_resource type="BoxMesh" id="Mesh_MuzzleBrake"]
+material = SubResource("Mat_MatteCarbon")
+size = Vector3(0.045, 0.045, 0.10)
+
+[sub_resource type="CylinderMesh" id="Mesh_Scope"]
+material = SubResource("Mat_PrecisionOptic")
+top_radius = 0.026
+bottom_radius = 0.024
+height = 0.28
+
+[sub_resource type="BoxMesh" id="Mesh_ScopeMount"]
+material = SubResource("Mat_MatteCarbon")
+size = Vector3(0.035, 0.04, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_Stock"]
+material = SubResource("Mat_MatteCarbon")
+size = Vector3(0.065, 0.13, 0.30)
+
+[sub_resource type="BoxMesh" id="Mesh_Grip"]
+material = SubResource("Mat_MatteCarbon")
+size = Vector3(0.045, 0.14, 0.06)
+
+[sub_resource type="BoxMesh" id="Mesh_Mag"]
+material = SubResource("Mat_MatteCarbon")
+size = Vector3(0.045, 0.16, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="Mat_MuzzleFlash"]
+shading_mode = 0
+albedo_color = Color(0.9, 0.95, 1.0, 0.95)
+
+[sub_resource type="BoxMesh" id="Mesh_Flash"]
+material = SubResource("Mat_MuzzleFlash")
+size = Vector3(0.08, 0.08, 0.08)
+
+[node name="StormfallSniper" type="Node3D"]
+script = ExtResource("1_weapon")
+weapon_id = "sniper_stormfall"
+weapon_name = "Stormfall Precision Sniper Rifle"
+weapon_type = 4
+rarity = 3
+is_automatic = false
+base_damage = 110
+headshot_multiplier = 2.35
+fire_rate = 0.85
+mag_capacity = 5
+current_ammo = 5
+reserve_ammo = 25
+max_reserve_ammo = 40
+reload_time = 2.6
+effective_range = 250.0
+base_spread_deg = 0.12
+max_spread_deg = 2.5
+spread_bloom_rate = 1.8
+spread_recovery_rate = 4.5
+ads_spread_multiplier = 0.05
+vertical_recoil_strength = 2.8
+horizontal_recoil_strength = 0.45
+scope_type = 4
+scope_zoom_fov = 18.0
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Chassis" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("Mesh_Chassis")
+
+[node name="Barrel" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.02, -0.62)
+mesh = SubResource("Mesh_Barrel")
+
+[node name="MuzzleBrake" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -1.0)
+mesh = SubResource("Mesh_MuzzleBrake")
+
+[node name="ScopeMount" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, -0.05)
+mesh = SubResource("Mesh_ScopeMount")
+
+[node name="Scope" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.11, -0.05)
+mesh = SubResource("Mesh_Scope")
+
+[node name="Stock" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0.38)
+mesh = SubResource("Mesh_Stock")
+
+[node name="Grip" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -0.10, 0.08)
+mesh = SubResource("Mesh_Grip")
+
+[node name="Magazine" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.11, -0.08)
+mesh = SubResource("Mesh_Mag")
+
+[node name="MuzzlePoint" type="Marker3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -1.06)
+
+[node name="MuzzleFlash" type="CPUParticles3D" parent="Model/MuzzlePoint"]
+emitting = false
+amount = 6
+lifetime = 0.06
+one_shot = true
+mesh = SubResource("Mesh_Flash")
+direction = Vector3(0, 0, -1)
+spread = 15.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 6.0
+initial_velocity_max = 10.0
+

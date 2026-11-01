@@ -1,0 +1,88 @@
+[gd_scene load_steps=9 format=3 uid="uid://courtyard_fountain_uid"]
+
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="1_stone"]
+[ext_resource type="Script" path="res://scripts/combat/cover_point.gd" id="2_cover"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_FountainStone"]
+resource_name = "Mat_FountainStone"
+albedo_color = Color(0.85, 0.88, 0.82, 1)
+albedo_texture = ExtResource("1_stone")
+uv1_scale = Vector3(4, 2, 4)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="Mat_WaterPool"]
+albedo_color = Color(0.12, 0.65, 0.85, 0.8)
+roughness = 0.05
+metallic = 0.2
+emission_enabled = true
+emission = Color(0.08, 0.55, 0.75, 1)
+emission_energy_multiplier = 0.4
+transparency = 1
+
+[sub_resource type="CylinderMesh" id="Mesh_OuterBasin"]
+material = SubResource("Mat_FountainStone")
+top_radius = 3.6
+bottom_radius = 3.8
+height = 1.1
+
+[sub_resource type="CylinderMesh" id="Mesh_WaterDisc"]
+material = SubResource("Mat_WaterPool")
+top_radius = 3.3
+bottom_radius = 3.3
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="Mesh_CenterPedestal"]
+material = SubResource("Mat_FountainStone")
+top_radius = 0.9
+bottom_radius = 1.2
+height = 2.4
+
+[sub_resource type="CylinderMesh" id="Mesh_UpperBowl"]
+material = SubResource("Mat_FountainStone")
+top_radius = 1.6
+bottom_radius = 0.8
+height = 0.6
+
+[sub_resource type="CylinderShape3D" id="Shape_FountainBasin"]
+height = 1.1
+radius = 3.6
+
+[node name="CourtyardFountain" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("Shape_FountainBasin")
+
+[node name="OuterBasin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+mesh = SubResource("Mesh_OuterBasin")
+
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98, 0)
+mesh = SubResource("Mesh_WaterDisc")
+
+[node name="CenterPedestal" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("Mesh_CenterPedestal")
+
+[node name="UpperBowl" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
+mesh = SubResource("Mesh_UpperBowl")
+
+[node name="CoverPoint_North" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.9)
+script = ExtResource("2_cover")
+
+[node name="CoverPoint_South" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.9)
+script = ExtResource("2_cover")
+
+[node name="CoverPoint_West" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9, 0, 0)
+script = ExtResource("2_cover")
+
+[node name="CoverPoint_East" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.9, 0, 0)
+script = ExtResource("2_cover")

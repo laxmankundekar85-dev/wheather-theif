@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://sun_monolith_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/sun_monolith.gd" id="1_monolith"]
+
+[sub_resource type="RectangleShape2D" id="monolith_shape"]
+size = Vector2(80, 140)
+
+[node name="SunMonolith" type="Area2D"]
+script = ExtResource("1_monolith")
+
+[node name="GlowAura" type="ColorRect" parent="."]
+offset_left = -50.0
+offset_top = -150.0
+offset_right = 50.0
+offset_bottom = 0.0
+color = Color(1, 0.85, 0.2, 0.25)
+
+[node name="StoneBody" type="ColorRect" parent="."]
+offset_left = -30.0
+offset_top = -120.0
+offset_right = 30.0
+offset_bottom = 0.0
+color = Color(0.22, 0.24, 0.28, 1)
+
+[node name="RuneCore" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -95.0
+offset_right = 16.0
+offset_bottom = -35.0
+color = Color(0.12, 0.14, 0.18, 1)
+
+[node name="RuneSymbol" type="Label" parent="."]
+offset_left = -16.0
+offset_top = -80.0
+offset_right = 16.0
+offset_bottom = -45.0
+text = "☀️"
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -60)
+shape = SubResource("monolith_shape")
+
+[node name="SunParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, -60)
+emitting = false
+amount = 40
+lifetime = 1.0
+emission_shape = 1
+emission_sphere_radius = 45.0
+direction = Vector2(0, -1)
+spread = 180.0
+initial_velocity_min = 40.0
+initial_velocity_max = 90.0
+color = Color(1, 0.9, 0.3, 0.9)
+scale_amount_min = 3.0
+scale_amount_max = 6.0

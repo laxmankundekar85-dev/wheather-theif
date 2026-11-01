@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://shadow_lurker_3d_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/enemies/shadow_lurker_3d.gd" id="1_lurker"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Shadow"]
+albedo_color = Color(0.12, 0.08, 0.16, 1)
+roughness = 0.9
+
+[sub_resource type="SphereMesh" id="SphereMesh_body"]
+material = SubResource("Mat_Shadow")
+radius = 0.55
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_Eyes"]
+albedo_color = Color(1, 0.1, 0.2, 1)
+emission_enabled = true
+emission = Color(1, 0.15, 0.2, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_eye"]
+material = SubResource("Mat_Eyes")
+radius = 0.12
+height = 0.24
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_root"]
+radius = 0.6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_detect"]
+radius = 11.0
+
+[node name="ShadowLurker3D" type="CharacterBody3D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_lurker")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("SphereShape3D_root")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("SphereMesh_body")
+
+[node name="LeftEye" type="MeshInstance3D" parent="VisualRoot/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.15, -0.45)
+mesh = SubResource("SphereMesh_eye")
+
+[node name="RightEye" type="MeshInstance3D" parent="VisualRoot/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 0.15, -0.45)
+mesh = SubResource("SphereMesh_eye")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detect")
+
+[node name="HitboxArea" type="Area3D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitboxArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+shape = SubResource("SphereShape3D_root")
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
+[connection signal="body_entered" from="HitboxArea" to="." method="_on_hitbox_body_entered"]

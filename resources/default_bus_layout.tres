@@ -1,0 +1,21 @@
+[gd_resource type="AudioBusLayout" format=3]
+
+[resource]
+Bus/0/Name = &"Master"
+Bus/0/Solo = false
+Bus/0/Mute = false
+Bus/0/Bypass FX = false
+Bus/0/Volume dB = 0.0
+Bus/0/Send = &""
+Bus/1/Name = &"Music"
+Bus/1/Solo = false
+Bus/1/Mute = false
+Bus/1/Bypass FX = false
+Bus/1/Volume dB = -3.0
+Bus/1/Send = &"Master"
+Bus/2/Name = &"SFX"
+Bus/2/Solo = false
+Bus/2/Mute = false
+Bus/2/Bypass FX = false
+Bus/2/Volume dB = 0.0
+Bus/2/Send = &"Master"

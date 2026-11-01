@@ -1,0 +1,366 @@
+[gd_scene load_steps=37 format=3 uid="uid://verdantia_combat_outpost_uid"]
+
+[ext_resource type="Script" path="res://scripts/levels/verdantia_combat_outpost.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://scenes/player/kael_shooter.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shadow_vanguard_soldier.tscn" id="3_soldier"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/vanguard_trooper.tscn" id="3_trooper"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/vanguard_enforcer.tscn" id="3_enforcer"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/vanguard_infiltrator.tscn" id="3_infiltrator"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/vanguard_marksman.tscn" id="3_marksman"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/vanguard_overseer.tscn" id="3_overseer"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shooter_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dialogue"]
+[ext_resource type="Script" path="res://scripts/combat/cover_point.gd" id="6_cover"]
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="7_stone_tex"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_urban_building.tscn" id="12_building"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_street_canopy.tscn" id="13_canopy"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_vehicle_wreck.tscn" id="14_vehicle"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_crates_stack.tscn" id="15_crates"]
+[ext_resource type="PackedScene" path="res://scenes/environment/ancient_ruins.tscn" id="16_ruins"]
+[ext_resource type="PackedScene" path="res://scenes/environment/cliff_rock.tscn" id="17_rock"]
+[ext_resource type="PackedScene" path="res://scenes/environment/market_stall.tscn" id="18_stall"]
+[ext_resource type="PackedScene" path="res://scenes/environment/street_lantern_post.tscn" id="19_lantern"]
+[ext_resource type="PackedScene" path="res://scenes/environment/ivy_wall_trim.tscn" id="20_ivy"]
+[ext_resource type="PackedScene" path="res://scenes/environment/ancient_stone_archway.tscn" id="21_archway"]
+[ext_resource type="PackedScene" path="res://scenes/environment/fortress_guard_tower.tscn" id="22_tower"]
+[ext_resource type="PackedScene" path="res://scenes/environment/courtyard_fountain.tscn" id="23_fountain"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_stairs.tscn" id="24_stairs"]
+[ext_resource type="PackedScene" path="res://scenes/environment/underground_passage_tunnel.tscn" id="25_tunnel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/mobile_tactical_hud.tscn" id="27_mobile"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="28_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/death_screen_3d.tscn" id="30_death"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sun"]
+sky_top_color = Color(0.22, 0.50, 0.88, 1)
+sky_horizon_color = Color(0.78, 0.82, 0.88, 1)
+ground_bottom_color = Color(0.18, 0.16, 0.14, 1)
+ground_horizon_color = Color(0.48, 0.44, 0.38, 1)
+sun_angle_max = 35.0
+sun_curve = 0.08
+
+[sub_resource type="Sky" id="Sky_sun"]
+sky_material = SubResource("ProceduralSkyMaterial_sun")
+
+[sub_resource type="Environment" id="Environment_sun"]
+background_mode = 2
+sky = SubResource("Sky_sun")
+ambient_light_source = 2
+ambient_light_color = Color(0.78, 0.82, 0.88, 1)
+ambient_light_energy = 0.42
+tonemap_mode = 3
+tonemap_exposure = 1.05
+glow_enabled = true
+glow_intensity = 0.45
+glow_bloom = 0.12
+fog_enabled = true
+fog_light_color = Color(0.76, 0.80, 0.85, 1)
+fog_density = 0.002
+fog_sky_affect = 0.25
+
+[sub_resource type="StandardMaterial3D" id="Mat_MainStreet"]
+albedo_texture = ExtResource("7_stone_tex")
+uv1_scale = Vector3(8, 24, 8)
+roughness = 0.82
+
+[sub_resource type="BoxMesh" id="Mesh_StreetCorridor"]
+material = SubResource("Mat_MainStreet")
+size = Vector3(56, 2, 96)
+
+[sub_resource type="BoxShape3D" id="Shape_StreetFloor"]
+size = Vector3(56, 2, 96)
+
+[sub_resource type="StandardMaterial3D" id="Mat_SunkenPlaza"]
+albedo_texture = ExtResource("7_stone_tex")
+uv1_scale = Vector3(16, 16, 16)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_PlazaFloor"]
+material = SubResource("Mat_SunkenPlaza")
+size = Vector3(52, 2, 42)
+
+[sub_resource type="BoxShape3D" id="Shape_PlazaFloor"]
+size = Vector3(52, 2, 42)
+
+[sub_resource type="StandardMaterial3D" id="Mat_FortressFloor"]
+resource_name = "Mat_FortressFloor"
+albedo_color = Color(0.75, 0.78, 0.72, 1)
+albedo_texture = ExtResource("7_stone_tex")
+uv1_scale = Vector3(12, 12, 12)
+roughness = 0.88
+
+[sub_resource type="BoxMesh" id="Mesh_FortressFloor"]
+material = SubResource("Mat_FortressFloor")
+size = Vector3(44, 2, 36)
+
+[sub_resource type="BoxShape3D" id="Shape_FortressFloor"]
+size = Vector3(44, 2, 36)
+
+[sub_resource type="StandardMaterial3D" id="Mat_StoneWall"]
+albedo_texture = ExtResource("7_stone_tex")
+uv1_scale = Vector3(3, 2, 3)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="Mesh_CoverWall"]
+material = SubResource("Mat_StoneWall")
+size = Vector3(3.8, 1.25, 0.5)
+
+[sub_resource type="BoxShape3D" id="Shape_CoverWall"]
+size = Vector3(3.8, 1.25, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="Mat_CorruptedSiphon"]
+albedo_color = Color(0.75, 0.1, 0.95, 1)
+emission_enabled = true
+emission = Color(0.85, 0.15, 1, 1)
+emission_energy_multiplier = 3.5
+
+[sub_resource type="SphereMesh" id="Mesh_SiphonSphere"]
+material = SubResource("Mat_CorruptedSiphon")
+radius = 1.3
+height = 2.6
+
+[node name="VerdantiaCombatOutpost" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sun")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 35, 0)
+light_color = Color(1, 0.94, 0.82, 1)
+light_energy = 1.65
+shadow_enabled = true
+shadow_bias = 0.03
+shadow_blur = 1.0
+
+[node name="GroundGeometry" type="Node3D" parent="."]
+
+[node name="MarketStreet" type="StaticBody3D" parent="GroundGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -5)
+collision_layer = 65
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GroundGeometry/MarketStreet"]
+mesh = SubResource("Mesh_StreetCorridor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GroundGeometry/MarketStreet"]
+shape = SubResource("Shape_StreetFloor")
+
+[node name="SunkenCourtyardGround" type="StaticBody3D" parent="GroundGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -12)
+collision_layer = 65
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GroundGeometry/SunkenCourtyardGround"]
+mesh = SubResource("Mesh_PlazaFloor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GroundGeometry/SunkenCourtyardGround"]
+shape = SubResource("Shape_PlazaFloor")
+
+[node name="FortressSanctumGround" type="StaticBody3D" parent="GroundGeometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -44)
+collision_layer = 65
+collision_mask = 0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GroundGeometry/FortressSanctumGround"]
+mesh = SubResource("Mesh_FortressFloor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GroundGeometry/FortressSanctumGround"]
+shape = SubResource("Shape_FortressFloor")
+
+[node name="AreaA_AncientMarket" type="Node3D" parent="."]
+
+[node name="BuildingA_West1" parent="AreaA_AncientMarket" instance=ExtResource("12_building")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -10.5, 0, 32)
+
+[node name="BuildingA_West2" parent="AreaA_AncientMarket" instance=ExtResource("12_building")]
+transform = Transform3D(0, 0, 1, 0, 1.15, 0, -1, 0, 0, -10.5, 0, 20)
+
+[node name="BuildingA_East1" parent="AreaA_AncientMarket" instance=ExtResource("12_building")]
+transform = Transform3D(0, 0, -1, 0, 1.1, 0, 1, 0, 0, 10.5, 0, 32)
+
+[node name="BuildingA_East2" parent="AreaA_AncientMarket" instance=ExtResource("12_building")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.5, 0, 20)
+
+[node name="MarketStall_Left" parent="AreaA_AncientMarket" instance=ExtResource("18_stall")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -4.2, 0, 25)
+
+[node name="MarketStall_Right" parent="AreaA_AncientMarket" instance=ExtResource("18_stall")]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.2, 0, 22)
+
+[node name="CratesA_Entry" parent="AreaA_AncientMarket" instance=ExtResource("15_crates")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0, 30)
+
+[node name="LanternPostA1" parent="AreaA_AncientMarket" instance=ExtResource("19_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0, 28)
+
+[node name="LanternPostA2" parent="AreaA_AncientMarket" instance=ExtResource("19_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0, 26)
+
+[node name="AreaB_OvergrownPassage" type="Node3D" parent="."]
+
+[node name="ArchwayB1" parent="AreaB_OvergrownPassage" instance=ExtResource("21_archway")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 14.0, 0, 12)
+
+[node name="ArchwayB2" parent="AreaB_OvergrownPassage" instance=ExtResource("21_archway")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 14.0, 0, 0)
+
+[node name="IvyWallB1" parent="AreaB_OvergrownPassage" instance=ExtResource("20_ivy")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16.2, 0, 8)
+
+[node name="IvyWallB2" parent="AreaB_OvergrownPassage" instance=ExtResource("20_ivy")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 16.2, 0, -2)
+
+[node name="StairsB_ToCourtyard" parent="AreaB_OvergrownPassage" instance=ExtResource("24_stairs")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 11.0, 0, -6)
+
+[node name="CratesB_Ambush" parent="AreaB_OvergrownPassage" instance=ExtResource("15_crates")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 15.5, 0, 5)
+
+[node name="LanternPostB" parent="AreaB_OvergrownPassage" instance=ExtResource("19_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8, 0, 6)
+
+[node name="AreaD_SunkenCourtyard" type="Node3D" parent="."]
+
+[node name="BuildingD_West" parent="AreaD_SunkenCourtyard" instance=ExtResource("12_building")]
+transform = Transform3D(0, 0, 1, 0, 1.05, 0, -1, 0, 0, -10.5, 0, 8)
+
+[node name="BuildingD_East" parent="AreaD_SunkenCourtyard" instance=ExtResource("12_building")]
+transform = Transform3D(0, 0, -1, 0, 1.25, 0, 1, 0, 0, 10.5, 0, 8)
+
+[node name="Fountain" parent="AreaD_SunkenCourtyard" instance=ExtResource("23_fountain")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8)
+
+[node name="VehicleWreck_Courtyard" parent="AreaD_SunkenCourtyard" instance=ExtResource("14_vehicle")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 1.2, 0, 4)
+
+[node name="CanopyD" parent="AreaD_SunkenCourtyard" instance=ExtResource("13_canopy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="CoverWallWest" type="StaticBody3D" parent="AreaD_SunkenCourtyard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0.62, -2)
+collision_layer = 65
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AreaD_SunkenCourtyard/CoverWallWest"]
+mesh = SubResource("Mesh_CoverWall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaD_SunkenCourtyard/CoverWallWest"]
+shape = SubResource("Shape_CoverWall")
+
+[node name="CoverPoint" type="Node3D" parent="AreaD_SunkenCourtyard/CoverWallWest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)
+script = ExtResource("6_cover")
+
+[node name="CoverWallEast" type="StaticBody3D" parent="AreaD_SunkenCourtyard"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2, 0.62, -2)
+collision_layer = 65
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AreaD_SunkenCourtyard/CoverWallEast"]
+mesh = SubResource("Mesh_CoverWall")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaD_SunkenCourtyard/CoverWallEast"]
+shape = SubResource("Shape_CoverWall")
+
+[node name="CoverPoint" type="Node3D" parent="AreaD_SunkenCourtyard/CoverWallEast"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)
+script = ExtResource("6_cover")
+
+[node name="AreaE_UndergroundPassage" type="Node3D" parent="."]
+
+[node name="TunnelSection1" parent="AreaE_UndergroundPassage" instance=ExtResource("25_tunnel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0, 0, 16)
+
+[node name="TunnelSection2" parent="AreaE_UndergroundPassage" instance=ExtResource("25_tunnel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0, 0, 4)
+
+[node name="TunnelSection3" parent="AreaE_UndergroundPassage" instance=ExtResource("25_tunnel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0, 0, -8)
+
+[node name="TunnelExitStairs" parent="AreaE_UndergroundPassage" instance=ExtResource("24_stairs")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -13.0, 0, -16)
+
+[node name="AreaC_RuinedFortress" type="Node3D" parent="."]
+
+[node name="RuinedArch_Entry" parent="AreaC_RuinedFortress" instance=ExtResource("21_archway")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -22)
+
+[node name="RuinedArch_Backdrop" parent="AreaC_RuinedFortress" instance=ExtResource("16_ruins")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, -48)
+
+[node name="FortressWallWest" type="StaticBody3D" parent="AreaC_RuinedFortress"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.0, 1.25, -28)
+collision_layer = 65
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AreaC_RuinedFortress/FortressWallWest"]
+mesh = SubResource("Mesh_CoverWall")
+scale = Vector3(2.2, 2.0, 1.0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaC_RuinedFortress/FortressWallWest"]
+shape = SubResource("Shape_CoverWall")
+scale = Vector3(2.2, 2.0, 1.0)
+
+[node name="FortressWallEast" type="StaticBody3D" parent="AreaC_RuinedFortress"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.0, 1.25, -28)
+collision_layer = 65
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AreaC_RuinedFortress/FortressWallEast"]
+mesh = SubResource("Mesh_CoverWall")
+scale = Vector3(2.2, 2.0, 1.0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaC_RuinedFortress/FortressWallEast"]
+shape = SubResource("Shape_CoverWall")
+scale = Vector3(2.2, 2.0, 1.0)
+
+[node name="GuardTower_SniperNest" parent="AreaC_RuinedFortress" instance=ExtResource("22_tower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.0, 0, -36)
+
+[node name="GuardTower_East" parent="AreaC_RuinedFortress" instance=ExtResource("22_tower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.0, 0, -36)
+
+[node name="FortressCrates" parent="AreaC_RuinedFortress" instance=ExtResource("15_crates")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -34)
+
+[node name="WeatherSiphon" type="Node3D" parent="AreaC_RuinedFortress"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+
+[node name="CoreMesh" type="MeshInstance3D" parent="AreaC_RuinedFortress/WeatherSiphon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("Mesh_SiphonSphere")
+
+[node name="Label3D" type="Label3D" parent="AreaC_RuinedFortress/WeatherSiphon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
+billboard = 1
+text = "Corrupted Weather Siphon [Sealed]"
+font_size = 26
+outline_size = 6
+
+[node name="CliffRockWest" parent="AreaC_RuinedFortress" instance=ExtResource("17_rock")]
+transform = Transform3D(1.6, 0, 0, 0, 2.0, 0, 0, 0, 1.6, -24, 0, -42)
+
+[node name="CliffRockEast" parent="AreaC_RuinedFortress" instance=ExtResource("17_rock")]
+transform = Transform3D(1.6, 0, 0, 0, 2.0, 0, 0, 0, 1.6, 24, 0, -42)
+
+[node name="Enemies" type="Node3D" parent="."]
+
+[node name="Vanguard_Market_Infiltrator" parent="Enemies" instance=ExtResource("3_infiltrator")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.05, 20)
+
+[node name="Vanguard_Passage_Trooper" parent="Enemies" instance=ExtResource("3_trooper")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 14.5, 0.05, 5)
+
+[node name="Vanguard_Courtyard_Enforcer" parent="Enemies" instance=ExtResource("3_enforcer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -6)
+
+[node name="Vanguard_Fortress_Marksman" parent="Enemies" instance=ExtResource("3_marksman")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.0, 6.4, -34.5)
+
+[node name="Vanguard_Sanctum_Overseer" parent="Enemies" instance=ExtResource("3_overseer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -36.0)
+
+[node name="KaelShooter" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 34)
+
+[node name="ShooterHUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="DialogueLayer" parent="." instance=ExtResource("5_dialogue")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("28_pause")]

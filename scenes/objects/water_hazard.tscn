@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=3 uid="uid://water_hazard_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/water_hazard.gd" id="1_water"]
+
+[sub_resource type="RectangleShape2D" id="hazard_shape_default"]
+size = Vector2(292, 50)
+
+[sub_resource type="RectangleShape2D" id="ice_shape_default"]
+size = Vector2(300, 24)
+
+[node name="WaterHazard" type="Area2D"]
+script = ExtResource("1_water")
+
+[node name="WaterVisual" type="ColorRect" parent="."]
+offset_left = -150.0
+offset_top = 0.0
+offset_right = 150.0
+offset_bottom = 60.0
+color = Color(0.12, 0.42, 0.85, 0.82)
+
+[node name="IceVisual" type="ColorRect" parent="."]
+visible = false
+offset_left = -150.0
+offset_top = 0.0
+offset_right = 150.0
+offset_bottom = 60.0
+color = Color(0.72, 0.88, 0.98, 0.95)
+
+[node name="IceTop" type="ColorRect" parent="."]
+visible = false
+offset_left = -150.0
+offset_top = 0.0
+offset_right = 150.0
+offset_bottom = 6.0
+color = Color(0.92, 0.97, 1.0, 1.0)
+
+[node name="HazardCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 30)
+shape = SubResource("hazard_shape_default")
+
+[node name="IceBody" type="StaticBody2D" parent="."]
+
+[node name="IceCollision" type="CollisionShape2D" parent="IceBody"]
+position = Vector2(0, 12)
+shape = SubResource("ice_shape_default")
+disabled = true
+
+[node name="FreezeParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 10)
+emitting = false
+amount = 30
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.8
+emission_shape = 2
+emission_rect_extents = Vector2(140, 15)
+direction = Vector2(0, -1)
+spread = 45.0
+initial_velocity_min = 40.0
+initial_velocity_max = 90.0
+color = Color(0.85, 0.95, 1.0, 0.9)
+scale_amount_min = 2.0
+scale_amount_max = 5.0

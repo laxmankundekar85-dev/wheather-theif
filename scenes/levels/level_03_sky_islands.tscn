@@ -1,0 +1,223 @@
+[gd_scene load_steps=21 format=3 uid="uid://level_03_sky_islands_uid"]
+
+[ext_resource type="Script" path="res://scripts/levels/level_03_sky_islands.gd" id="1_lvl3"]
+[ext_resource type="PackedScene" path="res://scenes/player/kael_shooter.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shooter_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dlg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_sky"]
+sky_top_color = Color(0.2, 0.5, 0.9, 1)
+sky_horizon_color = Color(0.65, 0.85, 1, 1)
+ground_bottom_color = Color(0.8, 0.88, 0.98, 1)
+ground_horizon_color = Color(0.6, 0.8, 1, 1)
+
+[sub_resource type="Sky" id="Sky_cloud"]
+sky_material = SubResource("SkyMat_sky")
+
+[sub_resource type="Environment" id="Env_sky"]
+background_mode = 2
+sky = SubResource("Sky_cloud")
+ambient_light_source = 2
+ambient_light_color = Color(0.7, 0.85, 1, 1)
+ambient_light_energy = 0.75
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Mat_WhiteMarble"]
+albedo_color = Color(0.9, 0.92, 0.95, 1)
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="Mesh_FloatingIsland"]
+material = SubResource("Mat_WhiteMarble")
+top_radius = 22.0
+bottom_radius = 8.0
+height = 12.0
+
+[sub_resource type="CylinderShape3D" id="Shape_FloatingIsland"]
+top_radius = 22.0
+bottom_radius = 8.0
+height = 12.0
+
+[sub_resource type="BoxMesh" id="Mesh_SkyBridge"]
+material = SubResource("Mat_WhiteMarble")
+size = Vector3(6, 1.2, 28)
+
+[sub_resource type="BoxShape3D" id="Shape_SkyBridge"]
+size = Vector3(6, 1.2, 28)
+
+[sub_resource type="StandardMaterial3D" id="Mat_GoldFiligree"]
+albedo_color = Color(0.95, 0.8, 0.35, 1)
+metallic = 0.9
+roughness = 0.2
+
+[sub_resource type="CylinderMesh" id="Mesh_TemplePillar"]
+material = SubResource("Mat_GoldFiligree")
+top_radius = 0.7
+bottom_radius = 0.8
+height = 7.0
+
+[sub_resource type="CylinderShape3D" id="Shape_TemplePillar"]
+top_radius = 0.7
+bottom_radius = 0.8
+height = 7.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_WindCore"]
+albedo_color = Color(0.3, 1, 0.8, 1)
+emission_enabled = true
+emission = Color(0.2, 0.95, 0.75, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="SphereMesh" id="Mesh_WindCore"]
+material = SubResource("Mat_WindCore")
+radius = 1.3
+height = 2.6
+
+[sub_resource type="CapsuleShape3D" id="Capsule_enemy"]
+radius = 0.4
+height = 1.8
+
+[node name="Level03SkyIslands" type="Node3D"]
+script = ExtResource("1_lvl3")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_sky")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.433, 0.25, 0, 0.5, 0.866, -0.5, -0.75, 0.433, 0, 40, 0)
+light_color = Color(1, 0.98, 0.92, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Islands" type="Node3D" parent="."]
+
+[node name="IslandSouth" type="StaticBody3D" parent="Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6, 24)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Islands/IslandSouth"]
+mesh = SubResource("Mesh_FloatingIsland")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Islands/IslandSouth"]
+shape = SubResource("Shape_FloatingIsland")
+
+[node name="Bridge" type="StaticBody3D" parent="Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Islands/Bridge"]
+mesh = SubResource("Mesh_SkyBridge")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Islands/Bridge"]
+shape = SubResource("Shape_SkyBridge")
+
+[node name="IslandNorth" type="StaticBody3D" parent="Islands"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6, -26)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Islands/IslandNorth"]
+mesh = SubResource("Mesh_FloatingIsland")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Islands/IslandNorth"]
+shape = SubResource("Shape_FloatingIsland")
+
+[node name="TempleSanctum" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26)
+
+[node name="WindSanctum" type="Node3D" parent="TempleSanctum"]
+
+[node name="Pillar1" type="StaticBody3D" parent="TempleSanctum/WindSanctum"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3.5, -4)
+collision_layer = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TempleSanctum/WindSanctum/Pillar1"]
+mesh = SubResource("Mesh_TemplePillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TempleSanctum/WindSanctum/Pillar1"]
+shape = SubResource("Shape_TemplePillar")
+
+[node name="Pillar2" type="StaticBody3D" parent="TempleSanctum/WindSanctum"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 3.5, -4)
+collision_layer = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TempleSanctum/WindSanctum/Pillar2"]
+mesh = SubResource("Mesh_TemplePillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TempleSanctum/WindSanctum/Pillar2"]
+shape = SubResource("Shape_TemplePillar")
+
+[node name="CoreMesh" type="MeshInstance3D" parent="TempleSanctum/WindSanctum"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+mesh = SubResource("Mesh_WindCore")
+
+[node name="Label3D" type="Label3D" parent="TempleSanctum/WindSanctum"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
+billboard = 1
+text = "💨 Sky Temple Sanctum"
+font_size = 28
+modulate = Color(0.3, 1, 0.8, 1)
+
+[node name="KaelShooter" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 26)
+
+[node name="Sky_Trooper" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 14)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sky_Trooper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Sky_Infiltrator" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sky_Infiltrator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Sky_Marksman" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -18)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sky_Marksman"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Sky_Enforcer" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -16)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sky_Enforcer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Boss_SkyWarden" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boss_SkyWarden"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="ShooterHUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="DialogueLayer" parent="." instance=ExtResource("5_dlg")]
+

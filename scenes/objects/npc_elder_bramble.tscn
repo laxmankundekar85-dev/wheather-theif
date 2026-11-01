@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://npc_elder_bramble_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/npc_elder_bramble.gd" id="1_bramble"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Wood"]
+albedo_color = Color(0.35, 0.22, 0.12, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_body"]
+material = SubResource("Mat_Wood")
+top_radius = 0.45
+bottom_radius = 0.65
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_Leaves"]
+albedo_color = Color(0.2, 0.5, 0.2, 1)
+roughness = 0.7
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+material = SubResource("Mat_Leaves")
+radius = 0.4
+height = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_Amber"]
+albedo_color = Color(1, 0.7, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.6, 0.1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_gem"]
+material = SubResource("Mat_Amber")
+radius = 0.18
+height = 0.36
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_static"]
+height = 1.8
+radius = 0.65
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
+radius = 3.0
+
+[node name="NPCElderBramble" type="Node3D"]
+script = ExtResource("1_bramble")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("CylinderMesh_body")
+
+[node name="Head" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+mesh = SubResource("SphereMesh_head")
+
+[node name="StaffGem" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1.8, 0.2)
+mesh = SubResource("SphereMesh_gem")
+
+[node name="Prompt3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+modulate = Color(1, 0.85, 0.3, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "[💬 Talk] Elder Bramble"
+font_size = 28
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CylinderShape3D_static")
+
+[node name="InteractionArea" type="Area3D" parent="." groups=["interactable"]]
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("SphereShape3D_interact")
+
+[connection signal="area_entered" from="InteractionArea" to="." method="_on_interaction_area_area_entered"]
+[connection signal="area_exited" from="InteractionArea" to="." method="_on_interaction_area_area_exited"]

@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://stone_archway_uid"]
+
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="1_stone"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_ArchStone"]
+albedo_color = Color(0.85, 0.82, 0.74, 1)
+albedo_texture = ExtResource("1_stone")
+uv1_scale = Vector3(2, 4, 2)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_Pillar"]
+material = SubResource("Mat_ArchStone")
+size = Vector3(1.2, 5.5, 1.2)
+
+[sub_resource type="BoxMesh" id="Mesh_ArchLintel"]
+material = SubResource("Mat_ArchStone")
+size = Vector3(6.4, 1.1, 1.4)
+
+[sub_resource type="BoxMesh" id="Mesh_ArchCrown"]
+material = SubResource("Mat_ArchStone")
+size = Vector3(4.8, 0.8, 1.5)
+
+[sub_resource type="BoxShape3D" id="Shape_Pillar"]
+size = Vector3(1.2, 5.5, 1.2)
+
+[sub_resource type="BoxShape3D" id="Shape_Lintel"]
+size = Vector3(6.4, 1.1, 1.4)
+
+[node name="AncientStoneArchway" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="PillarLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 2.75, 0)
+mesh = SubResource("Mesh_Pillar")
+
+[node name="ColLeft" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 2.75, 0)
+shape = SubResource("Shape_Pillar")
+
+[node name="PillarRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 2.75, 0)
+mesh = SubResource("Mesh_Pillar")
+
+[node name="ColRight" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 2.75, 0)
+shape = SubResource("Shape_Pillar")
+
+[node name="Lintel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.05, 0)
+mesh = SubResource("Mesh_ArchLintel")
+
+[node name="ColLintel" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.05, 0)
+shape = SubResource("Shape_Lintel")
+
+[node name="Crown" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.0, 0)
+mesh = SubResource("Mesh_ArchCrown")
+

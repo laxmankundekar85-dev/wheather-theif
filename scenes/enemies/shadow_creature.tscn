@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://shadow_creature_scene"]
+
+[ext_resource type="Script" path="res://scripts/enemies/shadow_creature.gd" id="1_enemy"]
+
+[sub_resource type="RectangleShape2D" id="body_shape"]
+size = Vector2(32, 28)
+
+[sub_resource type="RectangleShape2D" id="hitbox_shape"]
+size = Vector2(36, 26)
+
+[sub_resource type="RectangleShape2D" id="stomp_shape"]
+size = Vector2(28, 10)
+
+[node name="ShadowCreature" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_enemy")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="BodyRect" type="ColorRect" parent="Visual"]
+offset_left = -16.0
+offset_top = -28.0
+offset_right = 16.0
+offset_bottom = 0.0
+color = Color(0.12, 0.08, 0.22, 1)
+
+[node name="EyeLeft" type="ColorRect" parent="Visual"]
+offset_left = -10.0
+offset_top = -20.0
+offset_right = -4.0
+offset_bottom = -14.0
+color = Color(0.9, 0.2, 0.3, 1)
+
+[node name="EyeRight" type="ColorRect" parent="Visual"]
+offset_left = 2.0
+offset_top = -20.0
+offset_right = 8.0
+offset_bottom = -14.0
+color = Color(0.9, 0.2, 0.3, 1)
+
+[node name="IceCover" type="ColorRect" parent="Visual"]
+visible = false
+offset_left = -18.0
+offset_top = -30.0
+offset_right = 18.0
+offset_bottom = 2.0
+color = Color(0.7, 0.9, 1, 0.65)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -14)
+shape = SubResource("body_shape")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -13)
+shape = SubResource("hitbox_shape")
+
+[node name="StompArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompArea"]
+position = Vector2(0, -32)
+shape = SubResource("stomp_shape")
+
+[node name="DefeatParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, -14)
+emitting = false
+amount = 30
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.85
+emission_shape = 1
+emission_sphere_radius = 16.0
+direction = Vector2(0, -1)
+spread = 180.0
+initial_velocity_min = 60.0
+initial_velocity_max = 160.0
+color = Color(0.3, 0.15, 0.45, 0.9)
+scale_amount_min = 2.5
+scale_amount_max = 6.0

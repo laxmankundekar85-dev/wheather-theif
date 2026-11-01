@@ -1,0 +1,145 @@
+[gd_scene load_steps=18 format=3 uid="uid://tactical_building_uid"]
+
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="1_stone"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_StuccoWall"]
+resource_name = "Mat_StuccoWall"
+albedo_color = Color(0.92, 0.88, 0.78, 1)
+albedo_texture = ExtResource("1_stone")
+uv1_scale = Vector3(4, 3, 4)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Mat_StoneTrim"]
+resource_name = "Mat_StoneTrim"
+albedo_color = Color(0.82, 0.78, 0.70, 1)
+albedo_texture = ExtResource("1_stone")
+uv1_scale = Vector3(2, 2, 2)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="Mat_WoodPlanks"]
+resource_name = "Mat_WoodPlanks"
+albedo_color = Color(0.42, 0.28, 0.16, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_IronRailing"]
+resource_name = "Mat_IronRailing"
+albedo_color = Color(0.12, 0.14, 0.16, 1)
+metallic = 0.85
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_RoofTile"]
+resource_name = "Mat_RoofTile"
+albedo_color = Color(0.78, 0.38, 0.22, 1)
+roughness = 0.75
+
+[sub_resource type="StandardMaterial3D" id="Mat_IvyTrim"]
+resource_name = "Mat_IvyTrim"
+albedo_color = Color(0.22, 0.58, 0.28, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="Mesh_BuildingMain"]
+material = SubResource("Mat_StuccoWall")
+size = Vector3(12, 9, 8)
+
+[sub_resource type="BoxShape3D" id="Shape_BuildingMain"]
+size = Vector3(12, 9, 8)
+
+[sub_resource type="BoxMesh" id="Mesh_Doorway"]
+material = SubResource("Mat_WoodPlanks")
+size = Vector3(2.4, 3.4, 0.3)
+
+[sub_resource type="BoxMesh" id="Mesh_ArchFrame"]
+material = SubResource("Mat_StoneTrim")
+size = Vector3(2.8, 0.4, 0.5)
+
+[sub_resource type="BoxMesh" id="Mesh_Window"]
+material = SubResource("Mat_IronRailing")
+size = Vector3(1.6, 2.2, 0.2)
+
+[sub_resource type="BoxMesh" id="Mesh_Shutter"]
+material = SubResource("Mat_WoodPlanks")
+size = Vector3(0.55, 2.2, 0.12)
+
+[sub_resource type="BoxMesh" id="Mesh_BalconyFloor"]
+material = SubResource("Mat_StoneTrim")
+size = Vector3(3.6, 0.3, 1.8)
+
+[sub_resource type="BoxMesh" id="Mesh_BalconyRailing"]
+material = SubResource("Mat_IronRailing")
+size = Vector3(3.6, 1.0, 0.08)
+
+[sub_resource type="BoxMesh" id="Mesh_RoofOverhang"]
+material = SubResource("Mat_RoofTile")
+size = Vector3(12.8, 0.65, 8.8)
+
+[sub_resource type="CylinderMesh" id="Mesh_DrainPipe"]
+material = SubResource("Mat_IronRailing")
+top_radius = 0.08
+bottom_radius = 0.08
+height = 8.8
+
+[node name="TacticalBuilding" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="MainMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+mesh = SubResource("Mesh_BuildingMain")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+shape = SubResource("Shape_BuildingMain")
+
+[node name="GroundDoor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 4.02)
+mesh = SubResource("Mesh_Doorway")
+
+[node name="DoorArch" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 4.1)
+mesh = SubResource("Mesh_ArchFrame")
+
+[node name="Balcony" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 4.8)
+
+[node name="Floor" type="MeshInstance3D" parent="Balcony"]
+mesh = SubResource("Mesh_BalconyFloor")
+
+[node name="RailingFront" type="MeshInstance3D" parent="Balcony"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.85)
+mesh = SubResource("Mesh_BalconyRailing")
+
+[node name="BalconyDoor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.4, 4.02)
+mesh = SubResource("Mesh_Window")
+
+[node name="WindowLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0, 6.4, 4.02)
+mesh = SubResource("Mesh_Window")
+
+[node name="ShutterL_L" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -4.95, 6.4, 4.12)
+mesh = SubResource("Mesh_Shutter")
+
+[node name="ShutterL_R" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -3.05, 6.4, 4.12)
+mesh = SubResource("Mesh_Shutter")
+
+[node name="WindowRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 6.4, 4.02)
+mesh = SubResource("Mesh_Window")
+
+[node name="ShutterR_L" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 3.05, 6.4, 4.12)
+mesh = SubResource("Mesh_Shutter")
+
+[node name="ShutterR_R" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 4.95, 6.4, 4.12)
+mesh = SubResource("Mesh_Shutter")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.25, 0)
+mesh = SubResource("Mesh_RoofOverhang")
+
+[node name="DrainPipe" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 4.5, 4.05)
+mesh = SubResource("Mesh_DrainPipe")

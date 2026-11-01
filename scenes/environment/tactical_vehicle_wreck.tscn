@@ -1,0 +1,112 @@
+[gd_scene load_steps=15 format=3 uid="uid://tactical_vehicle_uid"]
+
+[ext_resource type="Script" path="res://scripts/combat/cover_point.gd" id="1_cover"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_TruckBody"]
+albedo_color = Color(0.72, 0.62, 0.44, 1)
+roughness = 0.65
+metallic = 0.35
+
+[sub_resource type="StandardMaterial3D" id="Mat_ChassisSteel"]
+albedo_color = Color(0.18, 0.2, 0.22, 1)
+roughness = 0.5
+metallic = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_TireRubber"]
+albedo_color = Color(0.12, 0.12, 0.14, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_BrokenGlass"]
+albedo_color = Color(0.4, 0.5, 0.55, 0.6)
+roughness = 0.1
+metallic = 0.5
+transparency = 1
+
+[sub_resource type="BoxMesh" id="Mesh_TruckCab"]
+material = SubResource("Mat_TruckBody")
+size = Vector3(2.2, 1.4, 2.0)
+
+[sub_resource type="BoxMesh" id="Mesh_TruckBed"]
+material = SubResource("Mat_TruckBody")
+size = Vector3(2.1, 1.1, 2.4)
+
+[sub_resource type="BoxMesh" id="Mesh_TruckWindshield"]
+material = SubResource("Mat_BrokenGlass")
+size = Vector3(1.8, 0.7, 0.1)
+
+[sub_resource type="CylinderMesh" id="Mesh_Wheel"]
+material = SubResource("Mat_TireRubber")
+top_radius = 0.45
+bottom_radius = 0.45
+height = 0.35
+
+[sub_resource type="BoxMesh" id="Mesh_FrontBumper"]
+material = SubResource("Mat_ChassisSteel")
+size = Vector3(2.3, 0.35, 0.3)
+
+[sub_resource type="BoxMesh" id="Mesh_RoofRack"]
+material = SubResource("Mat_ChassisSteel")
+size = Vector3(2.0, 0.15, 1.8)
+
+[sub_resource type="BoxShape3D" id="Shape_VehicleMain"]
+size = Vector3(2.4, 1.8, 4.4)
+
+[sub_resource type="BoxShape3D" id="Shape_HoodCover"]
+size = Vector3(2.2, 1.1, 1.5)
+
+[node name="TacticalVehicleWreck" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="CollisionMain" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("Shape_VehicleMain")
+
+[node name="Cab" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0.3)
+mesh = SubResource("Mesh_TruckCab")
+
+[node name="Bed" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -1.8)
+mesh = SubResource("Mesh_TruckBed")
+
+[node name="Windshield" type="MeshInstance3D" parent="Cab"]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.15, 1.02)
+mesh = SubResource("Mesh_TruckWindshield")
+
+[node name="RoofRack" type="MeshInstance3D" parent="Cab"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0)
+mesh = SubResource("Mesh_RoofRack")
+
+[node name="BumperFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 1.4)
+mesh = SubResource("Mesh_FrontBumper")
+
+[node name="WheelFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.15, 0.45, 0.9)
+mesh = SubResource("Mesh_Wheel")
+
+[node name="WheelFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.15, 0.45, 0.9)
+mesh = SubResource("Mesh_Wheel")
+
+[node name="WheelRL" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.15, 0.45, -1.8)
+mesh = SubResource("Mesh_Wheel")
+
+[node name="WheelRR" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.15, 0.45, -1.8)
+mesh = SubResource("Mesh_Wheel")
+
+[node name="CoverPoint_LeftFlank" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, 0)
+script = ExtResource("1_cover")
+
+[node name="CoverPoint_RightFlank" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.5, 0)
+script = ExtResource("1_cover")
+
+[node name="CoverPoint_Rear" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 2.4)
+script = ExtResource("1_cover")
+

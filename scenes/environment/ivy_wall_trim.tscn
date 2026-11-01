@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://ivy_wall_trim_uid"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_IvyFoliage"]
+resource_name = "Mat_IvyTrim"
+cull_mode = 0
+albedo_color = Color(0.24, 0.62, 0.32, 1)
+roughness = 0.75
+
+[sub_resource type="QuadMesh" id="Mesh_IvySheet"]
+material = SubResource("Mat_IvyFoliage")
+size = Vector2(3.5, 4.5)
+
+[node name="IvyWallTrim" type="Node3D"]
+
+[node name="IvyMesh1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.25, 0.02)
+mesh = SubResource("Mesh_IvySheet")
+
+[node name="IvyMesh2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 1.8, 1.85, 0.06)
+mesh = SubResource("Mesh_IvySheet")

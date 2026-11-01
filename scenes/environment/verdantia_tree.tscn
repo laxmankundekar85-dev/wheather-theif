@@ -1,0 +1,79 @@
+[gd_scene load_steps=12 format=3 uid="uid://verdantia_tree_uid"]
+
+[ext_resource type="Texture2D" path="res://assets/environments/fantasy_wood_bark.png" id="1_bark"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Trunk"]
+albedo_texture = ExtResource("1_bark")
+uv1_scale = Vector3(2, 4, 2)
+roughness = 0.88
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_trunk"]
+material = SubResource("Mat_Trunk")
+top_radius = 0.45
+bottom_radius = 0.95
+height = 6.4
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_trunk"]
+height = 6.4
+radius = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_Foliage_Deep"]
+albedo_color = Color(0.15, 0.48, 0.24, 1)
+roughness = 0.7
+rim_enabled = true
+rim = 0.45
+rim_tint = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_Foliage_Bright"]
+albedo_color = Color(0.24, 0.62, 0.32, 1)
+roughness = 0.65
+rim_enabled = true
+rim = 0.55
+rim_tint = 0.75
+
+[sub_resource type="SphereMesh" id="SphereMesh_canopy_top"]
+material = SubResource("Mat_Foliage_Bright")
+radius = 2.6
+height = 4.6
+radial_segments = 16
+rings = 10
+
+[sub_resource type="SphereMesh" id="SphereMesh_canopy_side"]
+material = SubResource("Mat_Foliage_Deep")
+radius = 2.2
+height = 3.8
+radial_segments = 16
+rings = 10
+
+[sub_resource type="SphereMesh" id="SphereMesh_canopy_mid"]
+material = SubResource("Mat_Foliage_Bright")
+radius = 2.4
+height = 4.0
+radial_segments = 16
+rings = 10
+
+[node name="VerdantiaTree" type="StaticBody3D"]
+
+[node name="Trunk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("CylinderMesh_trunk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+shape = SubResource("CylinderShape3D_trunk")
+
+[node name="CanopyTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.8, 0)
+mesh = SubResource("SphereMesh_canopy_top")
+
+[node name="CanopyLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.95, 0, 0, 0, 0.95, 0, 0, 0, 0.95, -1.8, 5.8, 0.4)
+mesh = SubResource("SphereMesh_canopy_side")
+
+[node name="CanopyRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.92, 0, 0, 0, 0.92, 0, 0, 0, 0.92, 1.7, 5.6, -0.3)
+mesh = SubResource("SphereMesh_canopy_side")
+
+[node name="CanopyFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.88, 0, 0, 0, 0.88, 0, 0, 0, 0.88, 0.3, 5.4, 1.6)
+mesh = SubResource("SphereMesh_canopy_mid")

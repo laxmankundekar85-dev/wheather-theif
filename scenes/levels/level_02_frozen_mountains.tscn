@@ -1,0 +1,224 @@
+[gd_scene load_steps=21 format=3 uid="uid://level_02_frozen_mountains_uid"]
+
+[ext_resource type="Script" path="res://scripts/levels/level_02_frozen_mountains.gd" id="1_lvl2"]
+[ext_resource type="PackedScene" path="res://scenes/player/kael_shooter.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_controller.gd" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shooter_hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="5_dlg"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMat_frost"]
+sky_top_color = Color(0.4, 0.6, 0.85, 1)
+sky_horizon_color = Color(0.75, 0.85, 0.95, 1)
+ground_bottom_color = Color(0.2, 0.28, 0.38, 1)
+ground_horizon_color = Color(0.7, 0.8, 0.9, 1)
+
+[sub_resource type="Sky" id="Sky_frost"]
+sky_material = SubResource("SkyMat_frost")
+
+[sub_resource type="Environment" id="Env_frost"]
+background_mode = 2
+sky = SubResource("Sky_frost")
+ambient_light_source = 2
+ambient_light_color = Color(0.7, 0.82, 0.95, 1)
+ambient_light_energy = 0.7
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Mat_SnowGround"]
+albedo_color = Color(0.85, 0.9, 0.98, 1)
+roughness = 0.85
+
+[sub_resource type="BoxMesh" id="Mesh_SnowGround"]
+material = SubResource("Mat_SnowGround")
+size = Vector3(80, 2, 80)
+
+[sub_resource type="BoxShape3D" id="Shape_SnowGround"]
+size = Vector3(80, 2, 80)
+
+[sub_resource type="StandardMaterial3D" id="Mat_IceCliff"]
+albedo_color = Color(0.35, 0.5, 0.65, 1)
+metallic = 0.2
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="Mesh_IceCliff"]
+material = SubResource("Mat_IceCliff")
+size = Vector3(18, 14, 6)
+
+[sub_resource type="BoxShape3D" id="Shape_IceCliff"]
+size = Vector3(18, 14, 6)
+
+[sub_resource type="StandardMaterial3D" id="Mat_FrostMetal"]
+albedo_color = Color(0.25, 0.35, 0.45, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="CylinderMesh" id="Mesh_Pillar"]
+material = SubResource("Mat_FrostMetal")
+top_radius = 0.8
+bottom_radius = 1.0
+height = 6.0
+
+[sub_resource type="CylinderShape3D" id="Shape_Pillar"]
+top_radius = 0.8
+bottom_radius = 1.0
+height = 6.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_CryoCore"]
+albedo_color = Color(0.4, 0.9, 1, 1)
+emission_enabled = true
+emission = Color(0.3, 0.85, 1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="Mesh_CryoCore"]
+material = SubResource("Mat_CryoCore")
+radius = 1.2
+height = 2.4
+
+[sub_resource type="CapsuleShape3D" id="Capsule_enemy"]
+radius = 0.4
+height = 1.8
+
+[node name="Level02FrozenMountains" type="Node3D"]
+script = ExtResource("1_lvl2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_frost")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 30, 0)
+light_color = Color(0.9, 0.95, 1, 1)
+light_energy = 1.15
+shadow_enabled = true
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="GroundMain" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/GroundMain"]
+mesh = SubResource("Mesh_SnowGround")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/GroundMain"]
+shape = SubResource("Shape_SnowGround")
+
+[node name="CliffLeft" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 6, 0)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/CliffLeft"]
+mesh = SubResource("Mesh_IceCliff")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/CliffLeft"]
+shape = SubResource("Shape_IceCliff")
+
+[node name="CliffRight" type="StaticBody3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 6, 0)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/CliffRight"]
+mesh = SubResource("Mesh_IceCliff")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/CliffRight"]
+shape = SubResource("Shape_IceCliff")
+
+[node name="CryoFacility" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -28)
+
+[node name="CryoSiphon" type="Node3D" parent="CryoFacility"]
+
+[node name="PillarL" type="StaticBody3D" parent="CryoFacility/CryoSiphon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 3, 0)
+collision_layer = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CryoFacility/CryoSiphon/PillarL"]
+mesh = SubResource("Mesh_Pillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CryoFacility/CryoSiphon/PillarL"]
+shape = SubResource("Shape_Pillar")
+
+[node name="PillarR" type="StaticBody3D" parent="CryoFacility/CryoSiphon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 3, 0)
+collision_layer = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CryoFacility/CryoSiphon/PillarR"]
+mesh = SubResource("Mesh_Pillar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CryoFacility/CryoSiphon/PillarR"]
+shape = SubResource("Shape_Pillar")
+
+[node name="CoreMesh" type="MeshInstance3D" parent="CryoFacility/CryoSiphon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+mesh = SubResource("Mesh_CryoCore")
+
+[node name="Label3D" type="Label3D" parent="CryoFacility/CryoSiphon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.2, 0)
+billboard = 1
+text = "❄ Eclipse Cryo-Siphon"
+font_size = 28
+modulate = Color(0.4, 0.9, 1, 1)
+
+[node name="KaelShooter" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 24)
+
+[node name="Frostguard_Trooper" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 10)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Frostguard_Trooper"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Frostguard_Infiltrator" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 6)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Frostguard_Infiltrator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Frostguard_Enforcer" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -8)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Frostguard_Enforcer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Frostguard_Marksman" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -12)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Frostguard_Marksman"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="Boss_FrostguardCaptain" type="CharacterBody3D" parent="." groups=["enemies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("3_enemy")
+enemy_class = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boss_FrostguardCaptain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Capsule_enemy")
+
+[node name="ShooterHUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="DialogueLayer" parent="." instance=ExtResource("5_dlg")]
+

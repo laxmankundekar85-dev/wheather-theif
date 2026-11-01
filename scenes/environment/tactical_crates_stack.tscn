@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://tactical_crates_uid"]
+
+[ext_resource type="Script" path="res://scripts/combat/cover_point.gd" id="1_cover"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_MilitaryWood"]
+albedo_color = Color(0.42, 0.35, 0.24, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_MetalStrapping"]
+albedo_color = Color(0.18, 0.2, 0.22, 1)
+metallic = 0.75
+roughness = 0.4
+
+[sub_resource type="BoxMesh" id="Mesh_CrateLarge"]
+material = SubResource("Mat_MilitaryWood")
+size = Vector3(1.3, 1.2, 1.3)
+
+[sub_resource type="BoxMesh" id="Mesh_CrateSmall"]
+material = SubResource("Mat_MilitaryWood")
+size = Vector3(0.9, 0.8, 0.9)
+
+[sub_resource type="BoxMesh" id="Mesh_Strap"]
+material = SubResource("Mat_MetalStrapping")
+size = Vector3(1.32, 0.08, 1.32)
+
+[sub_resource type="BoxShape3D" id="Shape_Crates"]
+size = Vector3(2.4, 1.4, 1.5)
+
+[node name="TacticalCratesStack" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+shape = SubResource("Shape_Crates")
+
+[node name="CrateBase1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.6, 0)
+mesh = SubResource("Mesh_CrateLarge")
+
+[node name="Strap1" type="MeshInstance3D" parent="CrateBase1"]
+mesh = SubResource("Mesh_Strap")
+
+[node name="CrateBase2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 0.6, 0.4, 0.1)
+mesh = SubResource("Mesh_CrateSmall")
+
+[node name="CrateTop" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.996195, 0, -0.0871557, 0, 1, 0, 0.0871557, 0, 0.996195, -0.45, 1.55, 0.05)
+mesh = SubResource("Mesh_CrateSmall")
+
+[node name="CoverPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.9)
+script = ExtResource("1_cover")
+

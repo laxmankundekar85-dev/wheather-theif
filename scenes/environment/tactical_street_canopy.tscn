@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://canopy_street_uid"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_CanopyFabric"]
+cull_mode = 0
+albedo_color = Color(0.36, 0.34, 0.25, 1)
+roughness = 0.95
+rim_enabled = true
+rim = 0.25
+rim_tint = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_Rope"]
+albedo_color = Color(0.18, 0.16, 0.14, 1)
+roughness = 0.85
+
+[sub_resource type="QuadMesh" id="Mesh_CanopyCloth"]
+material = SubResource("Mat_CanopyFabric")
+size = Vector2(9.8, 3.8)
+
+[sub_resource type="CylinderMesh" id="Mesh_HorizontalCable"]
+material = SubResource("Mat_Rope")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 12.0
+
+[node name="TacticalStreetCanopy" type="Node3D"]
+
+[node name="CanopyCloth" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.984808, -0.173648, 0, 0.163176, 0.925417, 0.34202, -0.0593912, -0.336824, 0.939693, 0, 5.2, 0)
+mesh = SubResource("Mesh_CanopyCloth")
+
+[node name="CableFront" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 5.6, -1.8)
+mesh = SubResource("Mesh_HorizontalCable")
+
+[node name="CableBack" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 5.0, 1.8)
+mesh = SubResource("Mesh_HorizontalCable")

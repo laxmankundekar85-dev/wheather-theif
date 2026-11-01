@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+*.translation
+
+# Build outputs
+*.apk
+*.aab
+*.exe
+*.pck
+*.idsig
+
+# System / Editor files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+*.swp
+*~

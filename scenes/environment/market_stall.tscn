@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://market_stall_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/combat/cover_point.gd" id="1_cover"]
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="2_stone"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_StallWood"]
+resource_name = "Mat_WoodPlanks"
+albedo_color = Color(0.48, 0.35, 0.22, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_AwningCloth"]
+resource_name = "Mat_RoofTile"
+cull_mode = 0
+albedo_color = Color(0.85, 0.42, 0.28, 1)
+roughness = 0.8
+rim_enabled = true
+rim = 0.35
+
+[sub_resource type="BoxMesh" id="Mesh_CounterTable"]
+material = SubResource("Mat_StallWood")
+size = Vector3(3.2, 0.95, 1.4)
+
+[sub_resource type="CylinderMesh" id="Mesh_PillarPost"]
+material = SubResource("Mat_StallWood")
+top_radius = 0.05
+bottom_radius = 0.06
+height = 2.8
+
+[sub_resource type="BoxMesh" id="Mesh_StallAwning"]
+material = SubResource("Mat_AwningCloth")
+size = Vector3(3.4, 0.12, 1.8)
+
+[sub_resource type="BoxShape3D" id="Shape_StallCounter"]
+size = Vector3(3.2, 0.95, 1.4)
+
+[node name="MarketStall" type="StaticBody3D"]
+collision_layer = 65
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
+shape = SubResource("Shape_StallCounter")
+
+[node name="Counter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
+mesh = SubResource("Mesh_CounterTable")
+
+[node name="PostFL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 1.4, 0.6)
+mesh = SubResource("Mesh_PillarPost")
+
+[node name="PostFR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 1.4, 0.6)
+mesh = SubResource("Mesh_PillarPost")
+
+[node name="PostBL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.45, 1.55, -0.6)
+mesh = SubResource("Mesh_PillarPost")
+
+[node name="PostBR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45, 1.55, -0.6)
+mesh = SubResource("Mesh_PillarPost")
+
+[node name="Awning" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 2.75, 0.05)
+mesh = SubResource("Mesh_StallAwning")
+
+[node name="CoverPoint_Front" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.0)
+script = ExtResource("1_cover")
+
+[node name="CoverPoint_Back" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.0)
+script = ExtResource("1_cover")

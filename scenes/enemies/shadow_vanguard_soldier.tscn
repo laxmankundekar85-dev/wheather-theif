@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://shadow_soldier_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_shooter_ai.gd" id="1_enemy_ai"]
+[ext_resource type="PackedScene" path="res://assets/characters/kael_avatar_c.glb" id="2_soldier_model"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/rifle_skybreaker.tscn" id="3_rifle"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_root"]
+radius = 0.42
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_head"]
+radius = 0.28
+
+[sub_resource type="StandardMaterial3D" id="Mat_RedFlash"]
+shading_mode = 0
+albedo_color = Color(1, 0.35, 0.2, 0.95)
+
+[sub_resource type="BoxMesh" id="Mesh_Flash"]
+material = SubResource("Mat_RedFlash")
+size = Vector3(0.08, 0.08, 0.08)
+
+[node name="ShadowVanguardSoldier" type="CharacterBody3D" groups=["enemies"]]
+collision_layer = 4
+collision_mask = 71
+script = ExtResource("1_enemy_ai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_root")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="ModelInstance" parent="VisualRoot" instance=ExtResource("2_soldier_model")]
+
+[node name="WeaponSocket" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0.24, 0.95, -0.22)
+
+[node name="RifleModel" parent="VisualRoot/WeaponSocket" instance=ExtResource("3_rifle")]
+
+[node name="HeadHitbox" type="Area3D" parent="VisualRoot" groups=["headshot"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualRoot/HeadHitbox"]
+shape = SubResource("SphereShape3D_head")
+
+[node name="LineOfSightRay" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+collision_mask = 3

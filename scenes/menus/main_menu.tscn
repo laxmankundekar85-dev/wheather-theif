@@ -1,0 +1,164 @@
+[gd_scene load_steps=2 format=3 uid="uid://main_menu_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/aetheria_title.jpg" id="2_bg"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_menu")
+
+[node name="BgDecorations" type="Node2D" parent="."]
+
+[node name="StarField" type="CPUParticles2D" parent="BgDecorations"]
+position = Vector2(640, 360)
+amount = 60
+lifetime = 10.0
+emission_shape = 3
+emission_box_extents = Vector2(700, 400)
+gravity = Vector2(0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+spread = 360.0
+scale_amount_min = 1.0
+scale_amount_max = 2.5
+color = Color(1.0, 0.95, 0.8, 0.5)
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="Root" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Backdrop" type="TextureRect" parent="UI/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+mouse_filter = 2
+z_index = -2
+
+[node name="DarkOverlay" type="ColorRect" parent="UI/Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.06, 0.12, 0.45)
+mouse_filter = 2
+z_index = -1
+
+[node name="TitleArea" type="VBoxContainer" parent="UI/Root"]
+layout_mode = 1
+anchor_left = 0.1
+anchor_right = 0.9
+anchor_top = 0.05
+anchor_bottom = 0.38
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="UI/Root/TitleArea"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+text = "WEATHER THIEF"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.25, 0.75, 1.0, 1)
+theme_override_font_sizes/font_size = 72
+
+[node name="SubtitleLabel" type="Label" parent="UI/Root/TitleArea"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+text = "AETHERIA — THE FALL OF THE SEVEN SKIES"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1.0, 0.85, 0.35, 0.95)
+theme_override_font_sizes/font_size = 22
+modulate = Color(1, 1, 1, 0)
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="UI/Root"]
+layout_mode = 1
+anchor_left = 0.3
+anchor_right = 0.7
+anchor_top = 0.38
+anchor_bottom = 0.96
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="NewGameBtn" type="Button" parent="UI/Root/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 54)
+mouse_filter = 0
+text = "✦  NEW GAME"
+theme_override_font_sizes/font_size = 20
+
+[node name="TpsDemoBtn" type="Button" parent="UI/Root/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 54)
+mouse_filter = 0
+text = "⚡  TPS COMBAT DEMO"
+theme_override_colors/font_color = Color(0.3, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="ContinueBtn" type="Button" parent="UI/Root/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 54)
+mouse_filter = 0
+text = "▶  CONTINUE"
+theme_override_font_sizes/font_size = 20
+
+[node name="SettingsBtn" type="Button" parent="UI/Root/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 54)
+mouse_filter = 0
+text = "⚙  SETTINGS"
+theme_override_font_sizes/font_size = 20
+
+[node name="CreditsBtn" type="Button" parent="UI/Root/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 54)
+mouse_filter = 0
+text = "★  CREDITS"
+theme_override_font_sizes/font_size = 20
+
+[node name="QuitBtn" type="Button" parent="UI/Root/ButtonsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(280, 54)
+mouse_filter = 0
+text = "✕  QUIT GAME"
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="VersionLabel" type="Label" parent="UI/Root"]
+layout_mode = 1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -26.0
+offset_right = 220.0
+offset_bottom = -4.0
+grow_vertical = 0
+mouse_filter = 2
+text = "v0.1.0  |  Godot 4.7"
+theme_override_colors/font_color = Color(0.4, 0.5, 0.6, 0.7)
+theme_override_font_sizes/font_size = 12

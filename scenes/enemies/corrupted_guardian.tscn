@@ -1,0 +1,83 @@
+[gd_scene load_steps=5 format=3 uid="uid://corrupted_guardian_scene"]
+
+[ext_resource type="Script" path="res://scripts/enemies/corrupted_guardian.gd" id="1_boss"]
+
+[sub_resource type="RectangleShape2D" id="boss_body_shape"]
+size = Vector2(64, 76)
+
+[sub_resource type="RectangleShape2D" id="boss_hitbox_shape"]
+size = Vector2(70, 70)
+
+[sub_resource type="RectangleShape2D" id="boss_stomp_shape"]
+size = Vector2(50, 16)
+
+[node name="CorruptedGuardian" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_boss")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="BodyCore" type="ColorRect" parent="Visual"]
+offset_left = -32.0
+offset_top = -64.0
+offset_right = 32.0
+offset_bottom = 0.0
+color = Color(0.18, 0.12, 0.26, 1)
+
+[node name="Head" type="ColorRect" parent="Visual"]
+offset_left = -24.0
+offset_top = -80.0
+offset_right = 24.0
+offset_bottom = -64.0
+color = Color(0.25, 0.16, 0.36, 1)
+
+[node name="Eyes" type="Label" parent="Visual"]
+offset_left = -20.0
+offset_top = -84.0
+offset_right = 20.0
+offset_bottom = -58.0
+text = "😈"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="HPLabel" type="Label" parent="Visual"]
+offset_left = -30.0
+offset_top = -105.0
+offset_right = 30.0
+offset_bottom = -82.0
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -38)
+shape = SubResource("boss_body_shape")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, -35)
+shape = SubResource("boss_hitbox_shape")
+
+[node name="StompArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompArea"]
+position = Vector2(0, -82)
+shape = SubResource("boss_stomp_shape")
+
+[node name="RoarParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, -40)
+emitting = false
+amount = 40
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.9
+emission_shape = 1
+emission_sphere_radius = 35.0
+direction = Vector2(0, -1)
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 240.0
+color = Color(0.65, 0.2, 0.8, 0.9)
+scale_amount_min = 3.0
+scale_amount_max = 7.0

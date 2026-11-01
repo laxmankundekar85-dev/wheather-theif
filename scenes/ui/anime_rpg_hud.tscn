@@ -1,0 +1,367 @@
+[gd_scene load_steps=10 format=3 uid="uid://anime_rpg_hud_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/ui/anime_rpg_hud.gd" id="1_hud"]
+[ext_resource type="Texture2D" path="res://assets/ui/kael_portrait.jpg" id="2_kael_pic"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_char_card"]
+bg_color = Color(0.08, 0.1, 0.15, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.6, 0.9, 0.6)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_portrait_frame"]
+bg_color = Color(0.05, 0.05, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.75, 0.35, 0.9)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp_fill"]
+bg_color = Color(0.2, 0.85, 0.45, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stamina_fill"]
+bg_color = Color(1, 0.8, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quest"]
+bg_color = Color(0.05, 0.07, 0.11, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.55, 0.8, 0.5)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_fill"]
+bg_color = Color(0.9, 0.15, 0.25, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_action_btn"]
+bg_color = Color(0.1, 0.14, 0.2, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.65, 0.95, 0.75)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[node name="AnimeRPGHUD" type="CanvasLayer"]
+process_mode = 3
+layer = 12
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopLeft" type="VBoxContainer" parent="Root"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = 380.0
+offset_bottom = 120.0
+mouse_filter = 2
+
+[node name="CharacterCard" type="PanelContainer" parent="Root/TopLeft"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_char_card")
+
+[node name="Margin" type="MarginContainer" parent="Root/TopLeft/CharacterCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="Root/TopLeft/CharacterCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PortraitFrame" type="PanelContainer" parent="Root/TopLeft/CharacterCard/Margin/HBox"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_portrait_frame")
+
+[node name="Portrait" type="TextureRect" parent="Root/TopLeft/CharacterCard/Margin/HBox/PortraitFrame"]
+layout_mode = 2
+texture = ExtResource("2_kael_pic")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="Root/TopLeft/CharacterCard/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Header" type="HBoxContainer" parent="Root/TopLeft/CharacterCard/Margin/HBox/VBox"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="Root/TopLeft/CharacterCard/Margin/HBox/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Kael"
+
+[node name="Level" type="Label" parent="Root/TopLeft/CharacterCard/Margin/HBox/VBox/Header"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "Lv. 10"
+
+[node name="HPBar" type="ProgressBar" parent="Root/TopLeft/CharacterCard/Margin/HBox/VBox"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp_fill")
+max_value = 5.0
+value = 5.0
+show_percentage = false
+
+[node name="HPLabel" type="Label" parent="Root/TopLeft/CharacterCard/Margin/HBox/VBox/HPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+text = "1,450 / 1,450"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StaminaBar" type="ProgressBar" parent="Root/TopLeft/CharacterCard/Margin/HBox/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_stamina_fill")
+value = 100.0
+show_percentage = false
+
+[node name="QuestBox" type="PanelContainer" parent="Root"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 135.0
+offset_right = 380.0
+offset_bottom = 215.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_quest")
+
+[node name="Margin" type="MarginContainer" parent="Root/QuestBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="VBox" type="VBoxContainer" parent="Root/QuestBox/Margin"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Root/QuestBox/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 16
+text = "✦ The Fall of the Seven Skies"
+
+[node name="Desc" type="Label" parent="Root/QuestBox/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.95, 0.9)
+theme_override_font_sizes/font_size = 13
+text = "Follow Lyra into Verdantia and cleanse the corrupted grove."
+
+[node name="BossBarContainer" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 28.0
+offset_right = 320.0
+offset_bottom = 88.0
+grow_horizontal = 2
+theme_override_constants/separation = 6
+
+[node name="BossName" type="Label" parent="Root/BossBarContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+text = "⚔️  Corrupted Forest Guardian — Beast of the Withered Grove"
+horizontal_alignment = 1
+
+[node name="BossHPBar" type="ProgressBar" parent="Root/BossBarContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_boss_fill")
+max_value = 850.0
+value = 850.0
+show_percentage = false
+
+[node name="TopRight" type="HBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -90.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = 84.0
+grow_horizontal = 0
+
+[node name="BtnPause" type="Button" parent="Root/TopRight"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "⏸"
+
+[node name="ActionCluster" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -340.0
+offset_top = -260.0
+offset_right = -40.0
+offset_bottom = -30.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="BtnAttack" type="Button" parent="Root/ActionCluster"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = 10.0
+offset_right = 136.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+text = "⚔️"
+
+[node name="BtnSkill" type="Button" parent="Root/ActionCluster"]
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = 25.0
+offset_right = 6.0
+offset_bottom = 101.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+text = "🌧️"
+
+[node name="CDLabel" type="Label" parent="Root/ActionCluster/BtnSkill"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "4.5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnBurst" type="Button" parent="Root/ActionCluster"]
+custom_minimum_size = Vector2(76, 76)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -75.0
+offset_right = 36.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+text = "⚡"
+
+[node name="BtnDash" type="Button" parent="Root/ActionCluster"]
+custom_minimum_size = Vector2(68, 68)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 65.0
+offset_top = -80.0
+offset_right = 133.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+text = "💨"
+
+[node name="BtnJump" type="Button" parent="Root/ActionCluster"]
+custom_minimum_size = Vector2(74, 74)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -135.0
+offset_top = -20.0
+offset_right = -61.0
+offset_bottom = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_action_btn")
+text = "▲"

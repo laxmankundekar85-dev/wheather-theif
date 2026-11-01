@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=3 uid="uid://kael_player_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/player/kael_controller.gd" id="1_kael"]
+[ext_resource type="PackedScene" path="res://assets/characters/kael_avatar_c.glb" id="2_kael_model"]
+[ext_resource type="PackedScene" path="res://scenes/player/kael_blade.tscn" id="3_blade"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_root"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hitbox"]
+size = Vector3(2.8, 2.2, 3.0)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_interact"]
+radius = 2.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_WaterParticle"]
+albedo_color = Color(0.3, 0.75, 1, 0.85)
+emission_enabled = true
+emission = Color(0.2, 0.7, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_water_droplet"]
+material = SubResource("Mat_WaterParticle")
+size = Vector3(0.08, 0.3, 0.08)
+
+[node name="Kael" type="CharacterBody3D" groups=["player"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_kael")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_root")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="ModelInstance" parent="VisualRoot" instance=ExtResource("2_kael_model")]
+
+[node name="BackSword" parent="VisualRoot" instance=ExtResource("3_blade")]
+transform = Transform3D(0.819152, -0.573576, 0, 0.569472, 0.81329, -0.119737, 0.068678, 0.098083, 0.992806, 0.06, 1.15, 0.14)
+
+[node name="HandSword" parent="VisualRoot" instance=ExtResource("3_blade")]
+transform = Transform3D(1, 0, 0, 0, 0.0871557, 0.996195, 0, -0.996195, 0.0871557, 0.35, 0.92, -0.22)
+visible = false
+
+[node name="AttackArea" type="Area3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.4)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualRoot/AttackArea"]
+shape = SubResource("BoxShape3D_hitbox")
+
+[node name="WaterSlashVFX" type="CPUParticles3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.9)
+emitting = false
+amount = 50
+lifetime = 0.45
+one_shot = true
+explosiveness = 0.85
+mesh = SubResource("BoxMesh_water_droplet")
+emission_shape = 2
+emission_sphere_radius = 2.8
+direction = Vector3(0, 0.4, -1)
+spread = 80.0
+initial_velocity_min = 9.0
+initial_velocity_max = 15.0
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+collision_mask = 1
+shape = SubResource("SphereShape3D_interact")
+spring_length = 5.2
+margin = 0.2
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.4, 0)
+current = true
+fov = 72.0
+
+[node name="InteractionArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("SphereShape3D_interact")

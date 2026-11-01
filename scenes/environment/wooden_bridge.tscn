@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://wooden_bridge_uid"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_WoodPlank"]
+albedo_color = Color(0.38, 0.25, 0.16, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_Rope"]
+albedo_color = Color(0.55, 0.48, 0.35, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck"]
+material = SubResource("Mat_WoodPlank")
+size = Vector3(4.8, 0.4, 18.0)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_post"]
+material = SubResource("Mat_WoodPlank")
+top_radius = 0.12
+bottom_radius = 0.14
+height = 1.4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_deck"]
+size = Vector3(4.8, 0.4, 18.0)
+
+[node name="WoodenBridge" type="StaticBody3D"]
+
+[node name="Deck" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_deck")
+
+[node name="PostL1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.7, -8.0)
+mesh = SubResource("CylinderMesh_post")
+
+[node name="PostR1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.7, -8.0)
+mesh = SubResource("CylinderMesh_post")
+
+[node name="PostL2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.7, 0)
+mesh = SubResource("CylinderMesh_post")
+
+[node name="PostR2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.7, 0)
+mesh = SubResource("CylinderMesh_post")
+
+[node name="PostL3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.7, 8.0)
+mesh = SubResource("CylinderMesh_post")
+
+[node name="PostR3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.7, 8.0)
+mesh = SubResource("CylinderMesh_post")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_deck")

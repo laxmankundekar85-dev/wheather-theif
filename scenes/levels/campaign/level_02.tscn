@@ -1,0 +1,272 @@
+[gd_scene load_steps=22 format=3 uid="uid://campaign_level_02_uid"]
+
+[ext_resource type="Script" path="res://scripts/campaign/modular_mission_controller.gd" id="1_controller"]
+[ext_resource type="PackedScene" path="res://scenes/player/kael_shooter.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shadow_vanguard_soldier.tscn" id="3_enemy_scn"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shooter_hud.tscn" id="4_hud"]
+[ext_resource type="Script" path="res://scripts/campaign/mission_target.gd" id="5_target"]
+[ext_resource type="Texture2D" path="res://assets/environments/ancient_stone_pavers.png" id="6_stone"]
+[ext_resource type="Texture2D" path="res://assets/environments/stylized_mossy_cobble.png" id="7_moss"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_urban_building.tscn" id="8_building"]
+[ext_resource type="PackedScene" path="res://scenes/environment/market_stall.tscn" id="9_stall"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_crates_stack.tscn" id="10_crates"]
+[ext_resource type="PackedScene" path="res://scenes/environment/street_lantern_post.tscn" id="11_lantern"]
+[ext_resource type="PackedScene" path="res://scenes/environment/ancient_stone_archway.tscn" id="12_arch"]
+[ext_resource type="PackedScene" path="res://scenes/environment/ivy_wall_trim.tscn" id="13_ivy"]
+[ext_resource type="PackedScene" path="res://scenes/environment/courtyard_fountain.tscn" id="14_fountain"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_stairs.tscn" id="15_stairs"]
+[ext_resource type="PackedScene" path="res://scenes/environment/verdantia_tree.tscn" id="16_tree"]
+[ext_resource type="PackedScene" path="res://scenes/environment/tactical_vehicle_wreck.tscn" id="17_wreck"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_l02"]
+sky_top_color = Color(0.24, 0.44, 0.72, 1)
+sky_horizon_color = Color(0.68, 0.78, 0.88, 1)
+ground_bottom_color = Color(0.18, 0.22, 0.26, 1)
+ground_horizon_color = Color(0.55, 0.65, 0.75, 1)
+
+[sub_resource type="Sky" id="SkyInst_l02"]
+sky_material = SubResource("Sky_l02")
+
+[sub_resource type="Environment" id="Env_l02"]
+background_mode = 2
+sky = SubResource("SkyInst_l02")
+ambient_light_source = 2
+ambient_light_color = Color(0.58, 0.68, 0.82, 1)
+ambient_light_energy = 0.85
+tonemap_mode = 2
+tonemap_white = 1.1
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.35
+glow_bloom = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Mat_CobbleStreet"]
+albedo_color = Color(0.85, 0.82, 0.76, 1)
+albedo_texture = ExtResource("6_stone")
+uv1_scale = Vector3(16, 24, 16)
+roughness = 0.82
+
+[sub_resource type="StandardMaterial3D" id="Mat_CanalStone"]
+albedo_color = Color(0.65, 0.72, 0.68, 1)
+albedo_texture = ExtResource("7_moss")
+uv1_scale = Vector3(12, 8, 12)
+roughness = 0.88
+
+[sub_resource type="StandardMaterial3D" id="Mat_Transmitter"]
+albedo_color = Color(0.2, 0.85, 1, 1)
+emission_enabled = true
+emission = Color(0.25, 0.85, 1, 1)
+emission_energy_multiplier = 3.5
+
+[sub_resource type="BoxMesh" id="Mesh_StreetMain"]
+material = SubResource("Mat_CobbleStreet")
+size = Vector3(36, 1.5, 70)
+
+[sub_resource type="BoxShape3D" id="Shape_StreetMain"]
+size = Vector3(36, 1.5, 70)
+
+[sub_resource type="BoxMesh" id="Mesh_CanalFloor"]
+material = SubResource("Mat_CanalStone")
+size = Vector3(24, 1.5, 40)
+
+[sub_resource type="BoxShape3D" id="Shape_CanalFloor"]
+size = Vector3(24, 1.5, 40)
+
+[sub_resource type="CylinderMesh" id="Mesh_TransmitterCore"]
+material = SubResource("Mat_Transmitter")
+top_radius = 0.35
+bottom_radius = 0.55
+height = 2.8
+
+[sub_resource type="CylinderShape3D" id="Shape_Transmitter"]
+top_radius = 0.4
+bottom_radius = 0.6
+height = 2.8
+
+[sub_resource type="CapsuleShape3D" id="Capsule_enemy"]
+radius = 0.4
+height = 1.8
+
+[node name="Level02" type="Node3D"]
+script = ExtResource("1_controller")
+override_level_index = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Env_l02")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 35, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.25
+shadow_enabled = true
+shadow_bias = 0.04
+
+[node name="StreetArchitecture" type="Node3D" parent="."]
+
+[node name="MainStreetGround" type="StaticBody3D" parent="StreetArchitecture"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, 10)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StreetArchitecture/MainStreetGround"]
+mesh = SubResource("Mesh_StreetMain")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StreetArchitecture/MainStreetGround"]
+shape = SubResource("Shape_StreetMain")
+
+[node name="SunkenCanalGround" type="StaticBody3D" parent="StreetArchitecture"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, -35)
+collision_layer = 1
+collision_mask = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StreetArchitecture/SunkenCanalGround"]
+mesh = SubResource("Mesh_CanalFloor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StreetArchitecture/SunkenCanalGround"]
+shape = SubResource("Shape_CanalFloor")
+
+[node name="Building_West1" parent="StreetArchitecture" instance=ExtResource("8_building")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 30)
+
+[node name="Building_West2" parent="StreetArchitecture" instance=ExtResource("8_building")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 10)
+
+[node name="Building_West3" parent="StreetArchitecture" instance=ExtResource("8_building")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -10)
+
+[node name="Building_East1" parent="StreetArchitecture" instance=ExtResource("8_building")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 16, 0, 30)
+
+[node name="Building_East2" parent="StreetArchitecture" instance=ExtResource("8_building")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 16, 0, 10)
+
+[node name="Building_East3" parent="StreetArchitecture" instance=ExtResource("8_building")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 16, 0, -10)
+
+[node name="AncientArchEntry" parent="StreetArchitecture" instance=ExtResource("12_arch")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 36)
+
+[node name="AncientArchBazaar" parent="StreetArchitecture" instance=ExtResource("12_arch")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0, 0)
+
+[node name="StairsToCanal" parent="StreetArchitecture" instance=ExtResource("15_stairs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.8, -16)
+
+[node name="CentralFountain" parent="StreetArchitecture" instance=ExtResource("14_fountain")]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 12)
+
+[node name="FoliageAndProps" type="Node3D" parent="."]
+
+[node name="Tree_WestEntry" parent="FoliageAndProps" instance=ExtResource("16_tree")]
+transform = Transform3D(1.3, 0, 0, 0, 1.3, 0, 0, 0, 1.3, -8, 0, 34)
+
+[node name="Tree_EastEntry" parent="FoliageAndProps" instance=ExtResource("16_tree")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 8, 0, 34)
+
+[node name="Tree_CanalSide" parent="FoliageAndProps" instance=ExtResource("16_tree")]
+transform = Transform3D(1.4, 0, 0, 0, 1.4, 0, 0, 0, 1.4, -9, -1.75, -28)
+
+[node name="Ivy_WallWest" parent="FoliageAndProps" instance=ExtResource("13_ivy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 1.8, 18)
+
+[node name="Ivy_WallEast" parent="FoliageAndProps" instance=ExtResource("13_ivy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5, 1.8, 4)
+
+[node name="MarketStall_West" parent="FoliageAndProps" instance=ExtResource("9_stall")]
+transform = Transform3D(0.966, 0, 0.259, 0, 1, 0, -0.259, 0, 0.966, -6, 0, 20)
+
+[node name="MarketStall_East" parent="FoliageAndProps" instance=ExtResource("9_stall")]
+transform = Transform3D(0.966, 0, -0.259, 0, 1, 0, 0.259, 0, 0.966, 6, 0, 22)
+
+[node name="Crates_SpawnCoverLeft" parent="FoliageAndProps" instance=ExtResource("10_crates")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 32)
+
+[node name="Crates_SpawnCoverRight" parent="FoliageAndProps" instance=ExtResource("10_crates")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 31)
+
+[node name="Crates_MidCoverLeft" parent="FoliageAndProps" instance=ExtResource("10_crates")]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, -5, 0, 4)
+
+[node name="Crates_MidCoverRight" parent="FoliageAndProps" instance=ExtResource("10_crates")]
+transform = Transform3D(0.866, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866, 5, 0, 6)
+
+[node name="VehicleWreck_Canal" parent="FoliageAndProps" instance=ExtResource("17_wreck")]
+transform = Transform3D(0.707, 0, 0.707, 0, 1, 0, -0.707, 0, 0.707, 4, -1.75, -24)
+
+[node name="Lantern_1" parent="FoliageAndProps" instance=ExtResource("11_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 28)
+
+[node name="Lantern_2" parent="FoliageAndProps" instance=ExtResource("11_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 16)
+
+[node name="Lantern_3" parent="FoliageAndProps" instance=ExtResource("11_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -6)
+
+[node name="Target1" type="Area3D" parent="." groups=["mission_targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, 8)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("5_target")
+target_name = "Rebel Signal Transmitter Alpha"
+max_health = 100
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("Mesh_TransmitterCore")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Target1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource("Shape_Transmitter")
+
+[node name="Label3D" type="Label3D" parent="Target1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+billboard = 1
+text = "Rebel Transmitter A"
+font_size = 22
+
+[node name="Target2" type="Area3D" parent="." groups=["mission_targets"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -1.75, -30)
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("5_target")
+target_name = "Rebel Signal Transmitter Beta"
+max_health = 100
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource("Mesh_TransmitterCore")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Target2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource("Shape_Transmitter")
+
+[node name="Label3D" type="Label3D" parent="Target2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+billboard = 1
+text = "Rebel Transmitter B"
+font_size = 22
+
+[node name="KaelShooter" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 38)
+
+[node name="Enemy1" parent="." instance=ExtResource("3_enemy_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 14)
+enemy_class = 0
+
+[node name="Enemy2" parent="." instance=ExtResource("3_enemy_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 16)
+enemy_class = 2
+
+[node name="Enemy3" parent="." instance=ExtResource("3_enemy_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6)
+enemy_class = 1
+
+[node name="Enemy4" parent="." instance=ExtResource("3_enemy_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -8)
+enemy_class = 1
+
+[node name="Enemy5" parent="." instance=ExtResource("3_enemy_scn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.75, -28)
+enemy_class = 3
+
+[node name="ShooterHUD" parent="." instance=ExtResource("4_hud")]

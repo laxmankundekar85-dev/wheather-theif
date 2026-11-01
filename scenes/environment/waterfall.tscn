@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3 uid="uid://waterfall_uid"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Waterfall"]
+transparency = 1
+albedo_color = Color(0.35, 0.75, 0.95, 0.85)
+roughness = 0.1
+emission_enabled = true
+emission = Color(0.2, 0.6, 0.85, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_cascade"]
+material = SubResource("Mat_Waterfall")
+size = Vector3(5.5, 9.0, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="Mat_Mist"]
+albedo_color = Color(0.85, 0.96, 1, 0.65)
+emission_enabled = true
+emission = Color(0.6, 0.9, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mist"]
+material = SubResource("Mat_Mist")
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="Mat_FoamBasin"]
+transparency = 1
+albedo_color = Color(0.8, 0.95, 1, 0.85)
+roughness = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_foam"]
+material = SubResource("Mat_FoamBasin")
+top_radius = 3.2
+bottom_radius = 3.6
+height = 0.3
+
+[node name="Waterfall" type="Node3D"]
+
+[node name="Cascade" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 4.5, 0)
+mesh = SubResource("BoxMesh_cascade")
+
+[node name="FoamBasin" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0.8)
+mesh = SubResource("CylinderMesh_foam")
+
+[node name="MistParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 1.2)
+amount = 45
+lifetime = 1.6
+mesh = SubResource("BoxMesh_mist")
+emission_shape = 2
+emission_box_extents = Vector3(2.5, 0.2, 1.2)
+direction = Vector3(0, 1, 0.5)
+spread = 60.0
+gravity = Vector3(0, -0.5, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.2

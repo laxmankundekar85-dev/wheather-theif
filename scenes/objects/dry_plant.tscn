@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://dry_plant_scene"]
+
+[ext_resource type="Script" path="res://scripts/objects/dry_plant.gd" id="1_plant"]
+
+[sub_resource type="RectangleShape2D" id="leaf_shape"]
+size = Vector2(140, 16)
+
+[node name="DryPlant" type="StaticBody2D"]
+script = ExtResource("1_plant")
+
+[node name="Stem" type="ColorRect" parent="."]
+offset_left = -5.0
+offset_top = -20.0
+offset_right = 5.0
+offset_bottom = 0.0
+color = Color(0.4, 0.35, 0.2, 1)
+
+[node name="LeafPlatform" type="ColorRect" parent="."]
+visible = false
+offset_left = -70.0
+offset_top = -140.0
+offset_right = 70.0
+offset_bottom = -124.0
+color = Color(0.25, 0.68, 0.25, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -132)
+shape = SubResource("leaf_shape")
+disabled = true
+
+[node name="SproutFlower" type="Label" parent="."]
+offset_left = -12.0
+offset_top = -45.0
+offset_right = 16.0
+offset_bottom = -15.0
+text = "🥀"
+theme_override_font_sizes/font_size = 22
+
+[node name="GrowParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, -20)
+emitting = false
+amount = 25
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.7
+emission_shape = 1
+emission_sphere_radius = 20.0
+direction = Vector2(0, -1)
+spread = 60.0
+initial_velocity_min = 60.0
+initial_velocity_max = 140.0
+gravity = Vector2(0, 80)
+color = Color(0.3, 0.9, 0.35, 0.9)
+scale_amount_min = 2.0
+scale_amount_max = 5.0

@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://kael_shooter_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/player/kael_shooter_controller.gd" id="1_kael_shooter"]
+[ext_resource type="PackedScene" path="res://assets/characters/kael_avatar_b.glb" id="2_kael_model"]
+[ext_resource type="Script" path="res://scripts/weapons/weapon_manager.gd" id="3_weapon_mgr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_root"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cam"]
+radius = 0.25
+
+[node name="KaelShooter" type="CharacterBody3D" groups=["player"]]
+collision_layer = 2
+collision_mask = 69
+script = ExtResource("1_kael_shooter")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_root")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="ModelInstance" parent="VisualRoot" instance=ExtResource("2_kael_model")]
+
+[node name="WeaponSocket" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.05, -0.25)
+
+[node name="WeaponManager" type="Node3D" parent="VisualRoot/WeaponSocket"]
+script = ExtResource("3_weapon_mgr")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+collision_mask = 1
+shape = SubResource("SphereShape3D_cam")
+spring_length = 2.4
+margin = 0.2
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48, 0.22, 0)
+current = true
+fov = 72.0
+
+[node name="InteractionArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_root")
+

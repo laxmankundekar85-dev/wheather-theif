@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://lyra_companion_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/player/lyra_companion.gd" id="1_lyra"]
+[ext_resource type="PackedScene" path="res://assets/characters/lyra_model.glb" id="2_lyra_model"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_Sparkle"]
+albedo_color = Color(0.7, 0.95, 1, 0.8)
+emission_enabled = true
+emission = Color(0.4, 0.85, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_sparkle"]
+material = SubResource("Mat_Sparkle")
+radius = 0.025
+height = 0.05
+radial_segments = 8
+rings = 6
+
+[sub_resource type="SphereMesh" id="SphereMesh_fairy_orb"]
+material = SubResource("Mat_Sparkle")
+radius = 0.045
+height = 0.09
+radial_segments = 12
+rings = 8
+
+[node name="LyraCompanion" type="Node3D"]
+script = ExtResource("1_lyra")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="LyraModel" parent="VisualRoot" instance=ExtResource("2_lyra_model")]
+transform = Transform3D(-0.8, 0, 0, 0, 0.8, 0, 0, 0, -0.8, 0, 0, 0)
+
+[node name="FairyWisp" type="MeshInstance3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.1, 0.1)
+mesh = SubResource("SphereMesh_fairy_orb")
+
+[node name="SparkleParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+amount = 16
+lifetime = 1.6
+mesh = SubResource("SphereMesh_sparkle")
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(0, 1, 0)
+spread = 45.0
+gravity = Vector3(0, 0.15, 0)
+initial_velocity_min = 0.3
+initial_velocity_max = 0.7
+
+[node name="SpeechBubble" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, 0)
+billboard = 1
+modulate = Color(0.4, 0.9, 1, 1)
+outline_modulate = Color(0, 0, 0, 0.95)
+outline_size = 6
+font_size = 28
+text = "..."

@@ -1,0 +1,314 @@
+[gd_scene load_steps=9 format=3 uid="uid://shooter_hud_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/ui/shooter_hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scripts/ui/crosshair_reticle.gd" id="2_crosshair"]
+[ext_resource type="PackedScene" path="res://scenes/ui/mobile_tactical_hud.tscn" id="3_mobile"]
+[ext_resource type="PackedScene" path="res://scenes/ui/death_screen_3d.tscn" id="4_death"]
+
+[sub_resource type="StyleBoxFlat" id="Style_HP_Fill"]
+bg_color = Color(0.15, 0.75, 0.35, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Style_Shield_Fill"]
+bg_color = Color(0.2, 0.65, 1, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Style_Ult_Fill"]
+bg_color = Color(0.95, 0.75, 0.15, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="Style_Bar_BG"]
+bg_color = Color(0.08, 0.08, 0.12, 0.75)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="ShooterHUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="SniperScopeOverlay" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ColorRect" type="ColorRect" parent="SniperScopeOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.92)
+
+[node name="CenterHole" type="ColorRect" parent="SniperScopeOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -260.0
+offset_right = 260.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.02, 0.05, 0.08, 0.15)
+
+[node name="CrosshairH" type="ColorRect" parent="SniperScopeOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -1.0
+offset_right = 260.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.1, 0.9, 0.3, 0.9)
+
+[node name="CrosshairV" type="ColorRect" parent="SniperScopeOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -260.0
+offset_right = 1.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.1, 0.9, 0.3, 0.9)
+
+[node name="ScopeLabel" type="Label" parent="SniperScopeOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -240.0
+offset_right = 120.0
+offset_bottom = -215.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "[ 8X OPTICAL ZOOM — STORMFALL ]"
+horizontal_alignment = 1
+
+[node name="CrosshairContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CrosshairReticle" type="Control" parent="CrosshairContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("2_crosshair")
+
+[node name="StatusCluster" type="MarginContainer" parent="."]
+offset_left = 32.0
+offset_top = 28.0
+offset_right = 340.0
+offset_bottom = 105.0
+
+[node name="VBox" type="VBoxContainer" parent="StatusCluster"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ShieldBar" type="ProgressBar" parent="StatusCluster/VBox"]
+custom_minimum_size = Vector2(280, 14)
+layout_mode = 2
+theme_override_styles/background = SubResource("Style_Bar_BG")
+theme_override_styles/fill = SubResource("Style_Shield_Fill")
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="StatusCluster/VBox/ShieldBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 11
+text = "SHIELD 50 / 50"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HPBar" type="ProgressBar" parent="StatusCluster/VBox"]
+custom_minimum_size = Vector2(280, 18)
+layout_mode = 2
+theme_override_styles/background = SubResource("Style_Bar_BG")
+theme_override_styles/fill = SubResource("Style_HP_Fill")
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="StatusCluster/VBox/HPBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+text = "HP 100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeaponCluster" type="MarginContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+offset_top = -140.0
+offset_right = -36.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="WeaponCluster"]
+layout_mode = 2
+
+[node name="ReloadBanner" type="Label" parent="WeaponCluster"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 13
+text = "⟳ RELOADING..."
+horizontal_alignment = 2
+
+[node name="WeaponName" type="Label" parent="WeaponCluster"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "SKYBREAKER MK-IV [RARE]"
+horizontal_alignment = 2
+
+[node name="HBox" type="HBoxContainer" parent="WeaponCluster"]
+layout_mode = 2
+alignment = 2
+
+[node name="AmmoCount" type="Label" parent="WeaponCluster/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.4, 1)
+theme_override_font_sizes/font_size = 46
+text = "30"
+
+[node name="ReserveCount" type="Label" parent="WeaponCluster/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 20
+text = "/ 120"
+
+[node name="AbilityCluster" type="MarginContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -80.0
+offset_right = 180.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBox" type="HBoxContainer" parent="AbilityCluster"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="SkillBox" type="PanelContainer" parent="AbilityCluster/HBox"]
+custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="AbilityCluster/HBox/SkillBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "[Q] RAIN: READY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UltBox" type="PanelContainer" parent="AbilityCluster/HBox"]
+custom_minimum_size = Vector2(180, 42)
+layout_mode = 2
+
+[node name="UltBar" type="ProgressBar" parent="AbilityCluster/HBox/UltBox"]
+layout_mode = 2
+theme_override_styles/background = SubResource("Style_Bar_BG")
+theme_override_styles/fill = SubResource("Style_Ult_Fill")
+value = 50.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="AbilityCluster/HBox/UltBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "⚡ [G] STORM: 50%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QuestBox" type="MarginContainer" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 28.0
+offset_right = -32.0
+offset_bottom = 120.0
+grow_horizontal = 0
+
+[node name="VBox" type="VBoxContainer" parent="QuestBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="QuestBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 14
+text = "◆ Mission 1: The Silent Outpost"
+horizontal_alignment = 2
+
+[node name="Desc" type="Label" parent="QuestBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.88, 0.95, 1)
+theme_override_font_sizes/font_size = 12
+text = "Infiltrate the perimeter and eliminate the forward patrol scouts."
+horizontal_alignment = 2
+autowrap_mode = 2
+
+[node name="MobileTacticalHUD" parent="." instance=ExtResource("3_mobile")]
+
+[node name="DeathScreen3D" parent="." instance=ExtResource("4_death")]
+

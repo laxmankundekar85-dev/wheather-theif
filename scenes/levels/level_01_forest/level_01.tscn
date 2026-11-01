@@ -1,0 +1,353 @@
+[gd_scene load_steps=18 format=3 uid="uid://level01_scene"]
+
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="2_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/touch_controls.tscn" id="3_touch"]
+[ext_resource type="PackedScene" path="res://scenes/collectibles/weather_bottle.tscn" id="4_bottle"]
+[ext_resource type="PackedScene" path="res://scenes/collectibles/heart_pickup.tscn" id="5_heart"]
+[ext_resource type="PackedScene" path="res://scenes/objects/dry_plant.tscn" id="6_plant"]
+[ext_resource type="PackedScene" path="res://scenes/objects/water_hazard.tscn" id="7_water"]
+[ext_resource type="PackedScene" path="res://scenes/objects/floating_wind_platform.tscn" id="8_wind_plat"]
+[ext_resource type="PackedScene" path="res://scenes/objects/ice_barrier.tscn" id="9_ice_wall"]
+[ext_resource type="PackedScene" path="res://scenes/objects/sun_monolith.tscn" id="10_monolith"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shadow_creature.tscn" id="11_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/corrupted_guardian.tscn" id="12_boss"]
+[ext_resource type="Script" path="res://scripts/systems/level_01.gd" id="13_level"]
+
+[sub_resource type="RectangleShape2D" id="ground_shape_sector1"]
+size = Vector2(1450, 48)
+
+[sub_resource type="RectangleShape2D" id="ground_shape_sector2"]
+size = Vector2(900, 48)
+
+[sub_resource type="RectangleShape2D" id="ground_shape_sector3"]
+size = Vector2(1600, 48)
+
+[sub_resource type="RectangleShape2D" id="plat_medium"]
+size = Vector2(220, 22)
+
+[sub_resource type="RectangleShape2D" id="plat_large"]
+size = Vector2(320, 22)
+
+[sub_resource type="RectangleShape2D" id="plat_small"]
+size = Vector2(140, 22)
+
+[sub_resource type="RectangleShape2D" id="cliff_wall_shape"]
+size = Vector2(40, 220)
+
+[sub_resource type="RectangleShape2D" id="trigger_shape"]
+size = Vector2(120, 160)
+
+[sub_resource type="RectangleShape2D" id="death_zone_shape"]
+size = Vector2(8000, 80)
+
+[node name="Level01_ForgottenForest" type="Node2D"]
+script = ExtResource("13_level")
+
+[node name="HUD" parent="." instance=ExtResource("2_hud")]
+
+[node name="TouchControls" parent="." instance=ExtResource("3_touch")]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
+
+[node name="ParallaxLayer_Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.05, 0.02)
+motion_mirroring = Vector2(3200, 0)
+
+[node name="SkyBG" type="ColorRect" parent="ParallaxBackground/ParallaxLayer_Sky"]
+offset_left = -800.0
+offset_top = -400.0
+offset_right = 3200.0
+offset_bottom = 800.0
+color = Color(0.06, 0.1, 0.18, 1)
+
+[node name="ParallaxLayer_FarTrees" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.05)
+motion_mirroring = Vector2(2400, 0)
+
+[node name="FarTreesBG" type="ColorRect" parent="ParallaxBackground/ParallaxLayer_FarTrees"]
+offset_left = -400.0
+offset_top = 60.0
+offset_right = 2400.0
+offset_bottom = 700.0
+color = Color(0.05, 0.16, 0.08, 1)
+
+[node name="ParallaxLayer_MidTrees" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.45, 0.1)
+motion_mirroring = Vector2(2000, 0)
+
+[node name="MidTreesBG" type="ColorRect" parent="ParallaxBackground/ParallaxLayer_MidTrees"]
+offset_left = -200.0
+offset_top = 160.0
+offset_right = 2000.0
+offset_bottom = 700.0
+color = Color(0.08, 0.23, 0.11, 1)
+
+[node name="GroundSegments" type="Node2D" parent="."]
+
+[node name="Sector1_Ground" type="StaticBody2D" parent="GroundSegments"]
+position = Vector2(650, 480)
+
+[node name="Visual" type="ColorRect" parent="GroundSegments/Sector1_Ground"]
+offset_left = -725.0
+offset_top = -24.0
+offset_right = 725.0
+offset_bottom = 40.0
+color = Color(0.14, 0.32, 0.12, 1)
+
+[node name="TopRim" type="ColorRect" parent="GroundSegments/Sector1_Ground"]
+offset_left = -725.0
+offset_top = -26.0
+offset_right = 725.0
+offset_bottom = -20.0
+color = Color(0.25, 0.55, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSegments/Sector1_Ground"]
+shape = SubResource("ground_shape_sector1")
+
+[node name="Sector1_Cliff" type="StaticBody2D" parent="GroundSegments"]
+position = Vector2(1350, 360)
+
+[node name="Visual" type="ColorRect" parent="GroundSegments/Sector1_Cliff"]
+offset_left = -20.0
+offset_top = -110.0
+offset_right = 20.0
+offset_bottom = 110.0
+color = Color(0.18, 0.22, 0.16, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSegments/Sector1_Cliff"]
+shape = SubResource("cliff_wall_shape")
+
+[node name="Sector2_Ground" type="StaticBody2D" parent="GroundSegments"]
+position = Vector2(1950, 480)
+
+[node name="Visual" type="ColorRect" parent="GroundSegments/Sector2_Ground"]
+offset_left = -450.0
+offset_top = -24.0
+offset_right = 450.0
+offset_bottom = 40.0
+color = Color(0.14, 0.32, 0.12, 1)
+
+[node name="TopRim" type="ColorRect" parent="GroundSegments/Sector2_Ground"]
+offset_left = -450.0
+offset_top = -26.0
+offset_right = 450.0
+offset_bottom = -20.0
+color = Color(0.25, 0.55, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSegments/Sector2_Ground"]
+shape = SubResource("ground_shape_sector2")
+
+[node name="Sector2_Ledge" type="StaticBody2D" parent="GroundSegments"]
+position = Vector2(3050, 480)
+
+[node name="Visual" type="ColorRect" parent="GroundSegments/Sector2_Ledge"]
+offset_left = -150.0
+offset_top = -24.0
+offset_right = 150.0
+offset_bottom = 40.0
+color = Color(0.14, 0.32, 0.12, 1)
+
+[node name="TopRim" type="ColorRect" parent="GroundSegments/Sector2_Ledge"]
+offset_left = -150.0
+offset_top = -26.0
+offset_right = 150.0
+offset_bottom = -20.0
+color = Color(0.25, 0.55, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSegments/Sector2_Ledge"]
+shape = SubResource("plat_large")
+
+[node name="Sector3_Ground" type="StaticBody2D" parent="GroundSegments"]
+position = Vector2(4300, 480)
+
+[node name="Visual" type="ColorRect" parent="GroundSegments/Sector3_Ground"]
+offset_left = -800.0
+offset_top = -24.0
+offset_right = 800.0
+offset_bottom = 40.0
+color = Color(0.14, 0.32, 0.12, 1)
+
+[node name="TopRim" type="ColorRect" parent="GroundSegments/Sector3_Ground"]
+offset_left = -800.0
+offset_top = -26.0
+offset_right = 800.0
+offset_bottom = -20.0
+color = Color(0.25, 0.55, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSegments/Sector3_Ground"]
+shape = SubResource("ground_shape_sector3")
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Plat_01" type="StaticBody2D" parent="Platforms"]
+position = Vector2(450, 360)
+
+[node name="Visual" type="ColorRect" parent="Platforms/Plat_01"]
+offset_left = -110.0
+offset_top = -11.0
+offset_right = 110.0
+offset_bottom = 11.0
+color = Color(0.18, 0.42, 0.15, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Plat_01"]
+shape = SubResource("plat_medium")
+
+[node name="Plat_02" type="StaticBody2D" parent="Platforms"]
+position = Vector2(750, 270)
+
+[node name="Visual" type="ColorRect" parent="Platforms/Plat_02"]
+offset_left = -110.0
+offset_top = -11.0
+offset_right = 110.0
+offset_bottom = 11.0
+color = Color(0.18, 0.42, 0.15, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Plat_02"]
+shape = SubResource("plat_medium")
+
+[node name="Plat_Ledge_Upper" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1500, 250)
+
+[node name="Visual" type="ColorRect" parent="Platforms/Plat_Ledge_Upper"]
+offset_left = -110.0
+offset_top = -11.0
+offset_right = 110.0
+offset_bottom = 11.0
+color = Color(0.18, 0.42, 0.15, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Plat_Ledge_Upper"]
+shape = SubResource("plat_medium")
+
+[node name="Plat_Sector2_A" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1850, 340)
+
+[node name="Visual" type="ColorRect" parent="Platforms/Plat_Sector2_A"]
+offset_left = -70.0
+offset_top = -11.0
+offset_right = 70.0
+offset_bottom = 11.0
+color = Color(0.18, 0.42, 0.15, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Plat_Sector2_A"]
+shape = SubResource("plat_small")
+
+[node name="Plat_Sector3_A" type="StaticBody2D" parent="Platforms"]
+position = Vector2(3750, 340)
+
+[node name="Visual" type="ColorRect" parent="Platforms/Plat_Sector3_A"]
+offset_left = -110.0
+offset_top = -11.0
+offset_right = 110.0
+offset_bottom = 11.0
+color = Color(0.18, 0.42, 0.15, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Plat_Sector3_A"]
+shape = SubResource("plat_medium")
+
+[node name="InteractiveObjects" type="Node2D" parent="."]
+
+[node name="DryPlantPuzzle" parent="InteractiveObjects" instance=ExtResource("6_plant")]
+position = Vector2(1180, 456)
+max_height = 180.0
+
+[node name="WaterGorge" parent="InteractiveObjects" instance=ExtResource("7_water")]
+position = Vector2(2650, 456)
+width = 460.0
+height = 80.0
+
+[node name="WindBarge" parent="InteractiveObjects" instance=ExtResource("8_wind_plat")]
+position = Vector2(3280, 420)
+move_distance = Vector2(380, 0)
+move_duration = 3.5
+
+[node name="IceBarrierGate" parent="InteractiveObjects" instance=ExtResource("9_ice_wall")]
+position = Vector2(4000, 410)
+
+[node name="SunMonolith" parent="InteractiveObjects" instance=ExtResource("10_monolith")]
+position = Vector2(4600, 480)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Shadow_01" parent="Enemies" instance=ExtResource("11_enemy")]
+position = Vector2(1850, 456)
+patrol_distance = 140.0
+
+[node name="Shadow_02" parent="Enemies" instance=ExtResource("11_enemy")]
+position = Vector2(2150, 456)
+patrol_distance = 160.0
+
+[node name="Shadow_03" parent="Enemies" instance=ExtResource("11_enemy")]
+position = Vector2(3850, 456)
+patrol_distance = 120.0
+
+[node name="CorruptedGuardian" parent="Enemies" instance=ExtResource("12_boss")]
+position = Vector2(4350, 456)
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="RainBottle" parent="Collectibles" instance=ExtResource("4_bottle")]
+position = Vector2(750, 200)
+weather_type = "rain"
+charges_granted = 4
+
+[node name="SnowBottle" parent="Collectibles" instance=ExtResource("4_bottle")]
+position = Vector2(2200, 400)
+weather_type = "snow"
+charges_granted = 4
+
+[node name="WindBottle" parent="Collectibles" instance=ExtResource("4_bottle")]
+position = Vector2(3100, 400)
+weather_type = "wind"
+charges_granted = 4
+
+[node name="SunBottle" parent="Collectibles" instance=ExtResource("4_bottle")]
+position = Vector2(3750, 260)
+weather_type = "sun"
+charges_granted = 4
+
+[node name="Heart_01" parent="Collectibles" instance=ExtResource("5_heart")]
+position = Vector2(1850, 290)
+
+[node name="Heart_02" parent="Collectibles" instance=ExtResource("5_heart")]
+position = Vector2(3450, 250)
+
+[node name="Checkpoints" type="Node2D" parent="."]
+
+[node name="Checkpoint_01" type="Area2D" parent="Checkpoints"]
+position = Vector2(1500, 210)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint_01"]
+shape = SubResource("trigger_shape")
+
+[node name="CPFlag" type="Label" parent="Checkpoints/Checkpoint_01"]
+offset_left = -16.0
+offset_top = -45.0
+offset_right = 16.0
+offset_bottom = -15.0
+text = "🚩"
+theme_override_font_sizes/font_size = 28
+
+[node name="Checkpoint_02" type="Area2D" parent="Checkpoints"]
+position = Vector2(3050, 430)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint_02"]
+shape = SubResource("trigger_shape")
+
+[node name="CPFlag" type="Label" parent="Checkpoints/Checkpoint_02"]
+offset_left = -16.0
+offset_top = -45.0
+offset_right = 16.0
+offset_bottom = -15.0
+text = "🚩"
+theme_override_font_sizes/font_size = 28
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(140, 410)
+
+[node name="DeathZone" type="Area2D" parent="."]
+position = Vector2(2500, 680)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
+shape = SubResource("death_zone_shape")

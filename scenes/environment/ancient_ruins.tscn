@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://ancient_ruins_uid"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_AncientStone"]
+albedo_color = Color(0.42, 0.44, 0.46, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="Mat_RuneGlow"]
+albedo_color = Color(0.3, 0.9, 1, 1)
+emission_enabled = true
+emission = Color(0.2, 0.85, 1, 1)
+emission_energy_multiplier = 3.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+material = SubResource("Mat_AncientStone")
+top_radius = 0.55
+bottom_radius = 0.65
+height = 6.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_lintel"]
+material = SubResource("Mat_AncientStone")
+size = Vector3(7.2, 0.8, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rune_inlay"]
+material = SubResource("Mat_RuneGlow")
+size = Vector3(5.0, 0.2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar_left"]
+size = Vector3(1.3, 6.2, 1.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar_right"]
+size = Vector3(1.3, 6.2, 1.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lintel"]
+size = Vector3(7.2, 0.8, 1.4)
+
+[node name="AncientRuinsArch" type="StaticBody3D"]
+
+[node name="PillarLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 3.1, 0)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="PillarRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 3.1, 0)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Lintel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 0)
+mesh = SubResource("BoxMesh_lintel")
+
+[node name="RuneInlay" type="MeshInstance3D" parent="Lintel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.72)
+mesh = SubResource("BoxMesh_rune_inlay")
+
+[node name="ColPillarLeft" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8, 3.1, 0)
+shape = SubResource("BoxShape3D_pillar_left")
+
+[node name="ColPillarRight" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 3.1, 0)
+shape = SubResource("BoxShape3D_pillar_right")
+
+[node name="ColLintel" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.5, 0)
+shape = SubResource("BoxShape3D_lintel")

@@ -1,0 +1,115 @@
+[gd_scene load_steps=14 format=3 uid="uid://tempest_shotgun_scene_uid"]
+
+[ext_resource type="Script" path="res://scripts/weapons/hitscan_weapon.gd" id="1_weapon"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_HeavySteel"]
+albedo_color = Color(0.2, 0.22, 0.25, 1)
+metallic = 0.9
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_WoodStock"]
+albedo_color = Color(0.45, 0.28, 0.16, 1)
+roughness = 0.65
+
+[sub_resource type="BoxMesh" id="Mesh_Receiver"]
+material = SubResource("Mat_HeavySteel")
+size = Vector3(0.08, 0.12, 0.42)
+
+[sub_resource type="CylinderMesh" id="Mesh_Barrel"]
+material = SubResource("Mat_HeavySteel")
+top_radius = 0.022
+bottom_radius = 0.022
+height = 0.48
+
+[sub_resource type="CylinderMesh" id="Mesh_MagTube"]
+material = SubResource("Mat_HeavySteel")
+top_radius = 0.018
+bottom_radius = 0.018
+height = 0.44
+
+[sub_resource type="BoxMesh" id="Mesh_Pump"]
+material = SubResource("Mat_WoodStock")
+size = Vector3(0.085, 0.08, 0.18)
+
+[sub_resource type="BoxMesh" id="Mesh_Stock"]
+material = SubResource("Mat_WoodStock")
+size = Vector3(0.07, 0.14, 0.28)
+
+[sub_resource type="BoxMesh" id="Mesh_BeadSight"]
+material = SubResource("Mat_HeavySteel")
+size = Vector3(0.015, 0.025, 0.02)
+
+[sub_resource type="StandardMaterial3D" id="Mat_MuzzleFlash"]
+shading_mode = 0
+albedo_color = Color(1, 0.6, 0.15, 0.95)
+
+[sub_resource type="BoxMesh" id="Mesh_Flash"]
+material = SubResource("Mat_MuzzleFlash")
+size = Vector3(0.12, 0.12, 0.12)
+
+[node name="TempestShotgun" type="Node3D"]
+script = ExtResource("1_weapon")
+weapon_id = "shotgun_tempest"
+weapon_name = "Tempest-12 Combat Shotgun"
+weapon_type = 3
+rarity = 2
+is_automatic = false
+base_damage = 96
+headshot_multiplier = 1.75
+fire_rate = 1.4
+mag_capacity = 8
+current_ammo = 8
+reserve_ammo = 40
+max_reserve_ammo = 64
+reload_time = 2.4
+effective_range = 38.0
+base_spread_deg = 3.6
+max_spread_deg = 6.8
+spread_bloom_rate = 1.2
+spread_recovery_rate = 6.0
+ads_spread_multiplier = 0.55
+vertical_recoil_strength = 2.4
+horizontal_recoil_strength = 0.65
+pellets_per_shot = 8
+scope_zoom_fov = 60.0
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Receiver" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("Mesh_Receiver")
+
+[node name="Barrel" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.02, -0.42)
+mesh = SubResource("Mesh_Barrel")
+
+[node name="MagTube" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.025, -0.40)
+mesh = SubResource("Mesh_MagTube")
+
+[node name="Pump" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, -0.32)
+mesh = SubResource("Mesh_Pump")
+
+[node name="Stock" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0.32)
+mesh = SubResource("Mesh_Stock")
+
+[node name="BeadSight" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -0.62)
+mesh = SubResource("Mesh_BeadSight")
+
+[node name="MuzzlePoint" type="Marker3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -0.66)
+
+[node name="MuzzleFlash" type="CPUParticles3D" parent="Model/MuzzlePoint"]
+emitting = false
+amount = 8
+lifetime = 0.06
+one_shot = true
+mesh = SubResource("Mesh_Flash")
+direction = Vector3(0, 0, -1)
+spread = 35.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 4.0
+initial_velocity_max = 8.0
+
